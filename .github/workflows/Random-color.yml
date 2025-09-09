@@ -1,0 +1,46 @@
+name: 🎨 Random Capsule Gradient
+
+on:
+  push:
+    branches: [ main ]   # 每次 push 都跑一次
+  schedule:
+    - cron: '0 0 * * *'  # 每天 00:00 也跑一次（可选）
+  workflow_dispatch:     # 手动触发按钮（可选）
+
+jobs:
+  gradient:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install rng tool
+        run: sudo apt-get install -y shuf
+
+      - name: Random pick gradient & update README
+        run: |
+          # 1. 定义配色池（继续往数组里加即可）
+          gradients=(
+            "0,FF6B6B,FFD479,FFFC79,73FA79"
+            "0,4158D0,FFCC70,FFD479,74B9FF"
+            "0,667EEA,764BA2,F093FB,F5576C"
+          )
+          # 2. 随机挑一行
+          color=${gradients[$(shuf -i 0-$((${#gradients[@]}-1)) -n 1)]}
+          # 3. 生成新片段
+          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=${color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end-->"
+
+          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end-->"
+
+          # 4. 替换 README（sed 多行友好版）
+          perl -0777 -pe "
+            s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end-->|$header_block|s;
+            s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end-->|$footer_block|s;
+          " -i README.md
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🎨 chore: update capsule gradient" && git push)
