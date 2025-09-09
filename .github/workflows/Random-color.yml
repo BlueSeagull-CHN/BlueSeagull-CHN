@@ -38,14 +38,14 @@ jobs:
           selected_colors=($(shuf -n 4 -e "${colors[@]}"))
           color="0:${selected_colors[0]},33:${selected_colors[1]},66:${selected_colors[2]},100:${selected_colors[3]}"
 
-          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=${color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end-->"
+          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=${color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
-          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end-->"
+          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
 
           # 使用 Perl 替换 README.md 中的 header 和 footer 部分
           perl -0777 -pe "
-            s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end-->|$header_block|s;
-            s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end-->|$footer_block|s;
+            s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
+            s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end -->|$footer_block|s;
           " -i README.md
 
           # 调试：输出生成的颜色值
