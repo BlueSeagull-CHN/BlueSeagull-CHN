@@ -14,9 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install rng tool
-        run: sudo apt-get install -y shuf
-
       - name: Random pick gradient & update README
         run: |
           # 1. 定义配色池（继续往数组里加即可）
