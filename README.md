@@ -1,8 +1,8 @@
-<!-- capsulate-header-start -->
+<!-- capsulate-header-start-->
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0,FF6B6B,FFD479,FFFC79,73FA79" alt="header"/>
 </p>
-<!-- capsulate-header-end -->
+<!-- capsulate-header-end-->
 
 <!-- 简短自我介绍 -->
 <h3 align="center">
@@ -45,8 +45,8 @@
   </a>
 </p>
 
-<!-- capsulate-footer-start -->
+<!-- capsulate-footer-start-->
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0,FF6B6B,FFD479,FFFC79,73FA79" alt="footer"/>
 </p>
-<!-- capsulate-footer-end -->
+<!-- capsulate-footer-end-->
