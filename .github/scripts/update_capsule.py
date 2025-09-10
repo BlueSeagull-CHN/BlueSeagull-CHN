@@ -250,9 +250,6 @@ def main():
         # 替换GitHub Stats背景（使用更精确的匹配）
         stats_pattern = r'https://github-readme-stats-bay\.vercel\.app/api\?[^"]*bg_color=[^"&]*[^"]*'
         content = re.sub(stats_pattern, new_stats_url, content)
-
-        # 生成新的Stats URL
-        new_stats_url = f"https://github-readme-stats.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color={stats_bg_param}&theme=graywhite"
         
         # 写回README
         with open(readme_path, 'w', encoding='utf-8') as f:
