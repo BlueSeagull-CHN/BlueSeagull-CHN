@@ -8,13 +8,13 @@ on:
   workflow_dispatch:            # 支持手动触发
 
 permissions:
-  contents: write               # 授予写仓库权限以更新 README
+  contents: write               # 授予写仓库权限以更新 README 和备份文件
 
 jobs:
   gradient:
     runs-on: ubuntu-latest
     steps:
-      # 检出代码库
+      # 检出代码库，包括 .github/scripts
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -33,7 +33,7 @@ jobs:
             echo "未找到 README.md，跳过备份"
           fi
 
-      # 安装 jq 和 Python（用于饱和度调整）
+      # 安装 jq 和 Python（用于读取 config.json 和调整颜色）
       - name: Install jq and Python
         run: |
           sudo apt-get update
@@ -106,8 +106,8 @@ jobs:
         id: adjust_colors
         run: |
           colors="${{ steps.read_config.outputs.colors }}"
-          count="${{ steps.read_config.outputs.count}"
-          saturation="${{ steps.read_config.outputs.saturation}}"
+          count="${{ steps.read_config.outputs.count }}"
+          saturation="${{ steps.read_config.outputs.saturation }}"
           # 验证 count（2-5）
           if ! [[ "$count" =~ ^[2-5]$ ]]; then
             echo "错误：gradient.count 必须在 2-5 之间，使用默认值 5"
@@ -132,27 +132,10 @@ jobs:
           while [ ${#valid_colors[@]} -lt $count ]; do
             valid_colors+=("${default_colors[$((RANDOM % ${#default_colors[@]}))]}")
           done
-          # 调整饱和度（使用 Python 的 colorsys）
-          adjusted_colors=()
-          for color in "${valid_colors[@]}"; do
-            # 移除 # 前缀，转换为 RGB
-            hex=${color#\#}
-            r=$((16#${hex:0:2}))
-            g=$((16#${hex:2:2}))
-            b=$((16#${hex:4:2}))
-            # Python 脚本：RGB -> HSL -> 调整饱和度 -> RGB -> HEX
-            adjusted_hex=$(python3 -c "
-import colorsys
-r, g, b = $r/255.0, $g/255.0, $b/255.0
-h, l, s = colorsys.rgb_to_hls(r, g, b)
-s = min(max(s * $saturation, 0.0), 1.0)  # 限制饱和度 0-1
-r, g, b = colorsys.hls_to_rgb(h, l, s)
-print(f'#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}')
-            ")
-            adjusted_colors+=("$adjusted_hex")
-          done
+          # 调整饱和度（调用外部 Python 脚本）
+          adjusted_colors=$(python3 .github/scripts/adjust_colors.py "${valid_colors[*]}" "$saturation")
           # 随机选择 count 个颜色
-          selected_colors=($(printf "%s\n" "${adjusted_colors[@]}" | shuf -n $count))
+          selected_colors=($(echo "$adjusted_colors" | shuf -n $count))
           # 生成 capsule-render 格式：0:hex1,20:hex2,...,100:hexN
           capsule_color=""
           if [ $count -eq 1 ]; then
@@ -250,7 +233,7 @@ print(f'#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md README-backup.md config.json
+          git add README.md README-backup.md config.json .github/scripts/adjust_colors.py
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "🎨 更新渐变颜色、文字和备份 README"
             git push || {
