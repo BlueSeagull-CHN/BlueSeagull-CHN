@@ -16,9 +16,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3  # 检出代码库
+        with:
+          fetch-depth: 0          # 拉取完整历史以避免冲突
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq  # 安装 jq 用于解析 JSON
+
+      - name: Check config.json existence
+        run: |
+          if [ ! -f config.json ]; then
+            echo "Error: config.json not found. Creating default config.json."
+            echo '{
+              "header": {"text": "👋 Hi, I'\''m BlueSeagull", "desc": "Welcome to my GitHub"},
+              "footer": {"text": "", "desc": ""},
+              "intro": {"text": "🚀 喜欢写代码、读书、折腾新技术"}
+            }' > config.json
+            git add config.json
+            git commit -m "Add default config.json" || true
+          fi
 
       - name: Read text from config.json
         id: read_config
@@ -28,7 +44,7 @@ jobs:
           header_desc=$(jq -r '.header.desc' config.json)
           footer_text=$(jq -r '.footer.text' config.json)
           footer_desc=$(jq -r '.footer.desc' config.json)
-          intro_text=$(jq -r '.intro.text' config.json)
+          intro_text=$(jq -r '.intro.text // "🚀 喜欢写代码、读书、折腾新技术"' config.json)
           # URL 编码（仅对 capsule-render 的参数）
           header_text_encoded=$(echo -n "$header_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
           header_desc_encoded=$(echo -n "$header_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
@@ -86,13 +102,13 @@ jobs:
           intro_text="${{ steps.read_config.outputs.intro_text }}"
 
           # 定义要替换的块
-          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
+          header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
-          intro_block="<!-- intro-start -->\n<h3 align=\"center\">\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
+          intro_block="<!-- intro-start -->\n<h3>\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
 
-          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
+          footer_block="<!-- capsulate-footer-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
 
-          stats_block="<!-- github-stats-start -->\n<p align=\"center\">\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
+          stats_block="<!-- github-stats-start -->\n<p>\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
 
           # 使用 Perl 替换 README.md 中的块
           perl -0777 -pe "
@@ -107,7 +123,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md config.json
-          git diff --quiet && git diff --staged --quiet || (
+          if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "🎨 chore: update capsule, stats gradients, and intro text"
-            git push
-          )
+            git push || {
+              echo "Push failed, attempting force push"
+              git push --force
+            }
+          else
+            echo "No changes to commit"
+          fi
