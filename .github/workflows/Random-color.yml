@@ -2,9 +2,9 @@ name: 🎨 Random Capsule Gradient
 
 on:
   push:
-    branches: [ main ]          # 每次推送到 main 分支时触发
+    branches: [ main ]          # 推送至 main 分支触发工作流程
   schedule:
-    - cron: '0 0 * * *'         # 每天 00:00 UTC 触发一次
+    - cron: '30 0 * * *'       # 每天 00:30 UTC（HKT 08:30）触发，需根据 config.json 的 gradient.schedule 手动调整
   workflow_dispatch:            # 支持手动触发
 
 permissions:
@@ -14,94 +14,221 @@ jobs:
   gradient:
     runs-on: ubuntu-latest
     steps:
+      # 检出代码库
       - name: Checkout
-        uses: actions/checkout@v3  # 检出代码库
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0          # 拉取完整历史以避免冲突
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq  # 安装 jq 用于解析 JSON
+      # 备份 README.md，防止动态更新覆盖
+      - name: Backup README.md
+        run: |
+          if [ -f README.md ]; then
+            cp README.md README-backup.md
+            git add README-backup.md
+            git commit -m "备份 README.md 在更新前" || true
+            echo "已备份 README.md 至 README-backup.md"
+          else
+            echo "未找到 README.md，跳过备份"
+          fi
 
+      # 安装 jq 和 Python（用于饱和度调整）
+      - name: Install jq and Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq python3
+
+      # 检查 config.json 是否存在，若无则创建默认配置
       - name: Check config.json existence
         run: |
           if [ ! -f config.json ]; then
-            echo "Error: config.json not found. Creating default config.json."
+            echo "错误：未找到 config.json，创建默认配置"
             echo '{
               "header": {"text": "👋 Hi, I'\''m BlueSeagull", "desc": "Welcome to my GitHub"},
               "footer": {"text": "", "desc": ""},
-              "intro": {"text": "🚀 喜欢写代码、读书、折腾新技术"}
+              "intro": {"text": "🚀 喜欢写代码、读书、折腾新技术"},
+              "gradient": {
+                "colors": [
+                  "#A3BFFA", "#AED9E0", "#B9E4C9", "#C1E1C1", "#D4F1F4",
+                  "#E0F7FA", "#F8C8DC", "#F5E1E6", "#FAD2CF", "#E6E6FA",
+                  "#F0E4D7", "#D8D8F0"
+                ],
+                "count": 5,
+                "saturation": 1.0,
+                "schedule": "24:30"
+              }
             }' > config.json
             git add config.json
-            git commit -m "Add default config.json" || true
+            git commit -m "添加默认 config.json" || true
           fi
 
-      - name: Read text from config.json
+      # 读取 config.json 的文字和渐变设置
+      - name: Read config.json
         id: read_config
         run: |
-          # 读取 config.json 中的文字
+          # 读取 header、intro、footer 文字
           header_text=$(jq -r '.header.text' config.json)
           header_desc=$(jq -r '.header.desc' config.json)
           footer_text=$(jq -r '.footer.text' config.json)
           footer_desc=$(jq -r '.footer.desc' config.json)
           intro_text=$(jq -r '.intro.text // "🚀 喜欢写代码、读书、折腾新技术"' config.json)
-          # URL 编码（仅对 capsule-render 的参数）
+          # URL 编码（用于 capsule-render 参数）
           header_text_encoded=$(echo -n "$header_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
           header_desc_encoded=$(echo -n "$header_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
           footer_text_encoded=$(echo -n "$footer_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
           footer_desc_encoded=$(echo -n "$footer_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
+          # 读取渐变设置
+          colors=$(jq -r '.gradient.colors // ["#A3BFFA", "#AED9E0", "#B9E4C9", "#C1E1C1", "#D4F1F4", "#E0F7FA", "#F8C8DC", "#F5E1E6", "#FAD2CF", "#E6E6FA", "#F0E4D7", "#D8D8F0"] | join(" ")' config.json)
+          count=$(jq -r '.gradient.count // 5' config.json)
+          saturation=$(jq -r '.gradient.saturation // 1.0' config.json)
+          schedule=$(jq -r '.gradient.schedule // "24:30"' config.json)
           # 输出到后续步骤
           echo "header_text_encoded=$header_text_encoded" >> $GITHUB_OUTPUT
           echo "header_desc_encoded=$header_desc_encoded" >> $GITHUB_OUTPUT
           echo "footer_text_encoded=$footer_text_encoded" >> $GITHUB_OUTPUT
           echo "footer_desc_encoded=$footer_desc_encoded" >> $GITHUB_OUTPUT
           echo "intro_text=$intro_text" >> $GITHUB_OUTPUT
-          echo "Read header_text: $header_text"
-          echo "Read header_desc: $header_desc"
-          echo "Read intro_text: $intro_text"
+          echo "colors=$colors" >> $GITHUB_OUTPUT
+          echo "count=$count" >> $GITHUB_OUTPUT
+          echo "saturation=$saturation" >> $GITHUB_OUTPUT
+          echo "schedule=$schedule" >> $GITHUB_OUTPUT
+          echo "读取 header_text: $header_text"
+          echo "读取 header_desc: $header_desc"
+          echo "读取 intro_text: $intro_text"
+          echo "读取 gradient.colors: $colors"
+          echo "读取 gradient.count: $count"
+          echo "读取 gradient.saturation: $saturation"
+          echo "读取 gradient.schedule: $schedule"
 
-      - name: Generate random gradient colors
-        id: generate_colors
+      # 验证渐变设置并调整饱和度
+      - name: Validate and adjust colors
+        id: adjust_colors
         run: |
-          # 清新淡雅的颜色池
-          colors=(
-            "A3BFFA"  # 浅紫蓝
-            "AED9E0"  # 湖蓝
-            "B9E4C9"  # 薄荷绿
-            "C1E1C1"  # 淡绿
-            "D4F1F4"  # 水蓝
-            "E0F7FA"  # 浅青
-            "F8C8DC"  # 樱花粉
-            "F5E1E6"  # 淡粉
-            "FAD2CF"  # 蜜桃粉
-            "E6E6FA"  # 薰衣草紫
-            "F0E4D7"  # 米白
-            "D8D8F0"  # 淡紫
-          )
-          # 随机挑选 4 个颜色
-          selected_colors=($(shuf -n 4 -e "${colors[@]}"))
-          # capsule-render 格式: 0:hex1,33:hex2,66:hex3,100:hex4
-          capsule_color="0:${selected_colors[0]},33:${selected_colors[1]},66:${selected_colors[2]},100:${selected_colors[3]}"
-          # github-readme-stats 格式: angle,hex1,hex2,hex3,hex4
-          stats_color="0,${selected_colors[0]},${selected_colors[1]},${selected_colors[2]},${selected_colors[3]}"
+          colors="${{ steps.read_config.outputs.colors }}"
+          count="${{ steps.read_config.outputs.count}"
+          saturation="${{ steps.read_config.outputs.saturation}}"
+          # 验证 count（2-5）
+          if ! [[ "$count" =~ ^[2-5]$ ]]; then
+            echo "错误：gradient.count 必须在 2-5 之间，使用默认值 5"
+            count=5
+          fi
+          # 验证 saturation（0.5-2.0）
+          if ! echo "$saturation" | grep -qE '^[0-1]\.[0-9]{1,2}$|^2\.0$'; then
+            echo "错误：gradient.saturation 必须在 0.5-2.0 之间，使用默认值 1.0"
+            saturation=1.0
+          fi
+          # 验证颜色格式（HEX）
+          valid_colors=()
+          for color in $colors; do
+            if [[ "$color" =~ ^#[0-9A-Fa-f]{6}$ ]]; then
+              valid_colors+=("$color")
+            else
+              echo "警告：无效颜色 $color，跳过"
+            fi
+          done
+          # 若有效颜色不足 count，从默认池补齐
+          default_colors=("A3BFFA" "AED9E0" "B9E4C9" "C1E1C1" "D4F1F4" "E0F7FA" "F8C8DC" "F5E1E6" "FAD2CF" "E6E6FA" "F0E4D7" "D8D8F0")
+          while [ ${#valid_colors[@]} -lt $count ]; do
+            valid_colors+=("${default_colors[$((RANDOM % ${#default_colors[@]}))]}")
+          done
+          # 调整饱和度（使用 Python 的 colorsys）
+          adjusted_colors=()
+          for color in "${valid_colors[@]}"; do
+            # 移除 # 前缀，转换为 RGB
+            hex=${color#\#}
+            r=$((16#${hex:0:2}))
+            g=$((16#${hex:2:2}))
+            b=$((16#${hex:4:2}))
+            # Python 脚本：RGB -> HSL -> 调整饱和度 -> RGB -> HEX
+            adjusted_hex=$(python3 -c "
+import colorsys
+r, g, b = $r/255.0, $g/255.0, $b/255.0
+h, l, s = colorsys.rgb_to_hls(r, g, b)
+s = min(max(s * $saturation, 0.0), 1.0)  # 限制饱和度 0-1
+r, g, b = colorsys.hls_to_rgb(h, l, s)
+print(f'#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}')
+            ")
+            adjusted_colors+=("$adjusted_hex")
+          done
+          # 随机选择 count 个颜色
+          selected_colors=($(printf "%s\n" "${adjusted_colors[@]}" | shuf -n $count))
+          # 生成 capsule-render 格式：0:hex1,20:hex2,...,100:hexN
+          capsule_color=""
+          if [ $count -eq 1 ]; then
+            capsule_color="0:${selected_colors[0]}"
+          else
+            step=$(echo "scale=2; 100 / ($count - 1)" | bc)
+            for i in "${!selected_colors[@]}"; do
+              percentage=$(echo "scale=0; $i * $step / 1" | bc)
+              capsule_color+="$percentage:${selected_colors[$i]}"
+              [ $i -lt $((count-1)) ] && capsule_color+=","
+            done
+          fi
+          # 生成 github-readme-stats 格式：0,hex1,hex2,...,hexN
+          stats_color="0"
+          for color in "${selected_colors[@]}"; do
+            stats_color+=",${color#\#}"
+          done
           # 输出到后续步骤
           echo "capsule_color=$capsule_color" >> $GITHUB_OUTPUT
           echo "stats_color=$stats_color" >> $GITHUB_OUTPUT
-          echo "Generated capsule_color: $capsule_color"
-          echo "Generated stats_color: $stats_color"
+          echo "调整后的颜色: ${selected_colors[*]}"
+          echo "生成的 capsule_color: $capsule_color"
+          echo "生成的 stats_color: $stats_color"
 
+      # 解析刷新频率并提示 cron 表达式
+      - name: Parse schedule
+        id: parse_schedule
+        run: |
+          schedule="${{ steps.read_config.outputs.schedule }}"
+          cron=""
+          case "$schedule" in
+            "daily")
+              cron="0 0 * * *"
+              ;;
+            "weekly")
+              cron="0 0 * * 0"
+              ;;
+            "monthly")
+              cron="0 0 1 * *"
+              ;;
+            *[0-2][0-9]:[0-5][0-9]*)
+              hour=$(echo "$schedule" | cut -d':' -f1)
+              minute=$(echo "$schedule" | cut -d':' -f2)
+              # 处理 24:XX 为次日 00:XX
+              if [ "$hour" = "24" ]; then
+                hour="0"
+              fi
+              if [[ "$hour" =~ ^[0-2][0-9]$ && "$minute" =~ ^[0-5][0-9]$ ]]; then
+                cron="$minute $hour * * *"
+              else
+                echo "错误：无效时间格式 $schedule，使用默认 daily (0 0 * * *)"
+                cron="0 0 * * *"
+              fi
+              ;;
+            *)
+              echo "错误：无效 schedule 格式 $schedule，使用默认 daily (0 0 * * *)"
+              cron="0 0 * * *"
+              ;;
+          esac
+          echo "解析的 cron 表达式: $cron"
+          echo "请手动更新 Random-color.yml 的 on.schedule.cron 为 '$cron'"
+          echo "cron=$cron" >> $GITHUB_OUTPUT
+
+      # 更新 README.md 的渐变和文字
       - name: Update README with gradients and text
         run: |
           # 获取变量
-          capsule_color="${{ steps.generate_colors.outputs.capsule_color }}"
-          stats_color="${{ steps.generate_colors.outputs.stats_color }}"
+          capsule_color="${{ steps.adjust_colors.outputs.capsule_color }}"
+          stats_color="${{ steps.adjust_colors.outputs.stats_color }}"
           header_text_encoded="${{ steps.read_config.outputs.header_text_encoded }}"
           header_desc_encoded="${{ steps.read_config.outputs.header_desc_encoded }}"
           footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
           footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
           intro_text="${{ steps.read_config.outputs.intro_text }}"
 
-          # 定义块
+          # 定义替换块
           header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
           intro_block="<!-- intro-start -->\n<h3>\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
@@ -110,7 +237,7 @@ jobs:
 
           stats_block="<!-- github-stats-start -->\n<p>\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
 
-          # 使用 Perl 替换
+          # 使用 Perl 替换，仅更新动态部分
           perl -0777 -pe "
             s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
             s|<!-- intro-start -->.*?<!-- intro-end -->|$intro_block|s;
@@ -118,17 +245,18 @@ jobs:
             s|<!-- github-stats-start -->.*?<!-- github-stats-end -->|$stats_block|s;
           " -i README.md
 
+      # 提交更改
       - name: Commit & push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md config.json
+          git add README.md README-backup.md config.json
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "🎨 chore: update capsule, stats gradients, and intro text"
+            git commit -m "🎨 更新渐变颜色、文字和备份 README"
             git push || {
-              echo "Push failed, attempting force push"
+              echo "推送失败，尝试强制推送"
               git push --force
             }
           else
-            echo "No changes to commit"
+            echo "无更改需要提交"
           fi
