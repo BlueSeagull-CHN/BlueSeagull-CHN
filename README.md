@@ -57,20 +57,20 @@
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
-<div align="center">
+<div align="left">
 
-<h4 style="text-align: center;">⚙️ 配置说明</h4>
-<p style="text-align: center;">
+<h4>⚙️ 配置说明</h4>
+<p>
   渐变和文字设置在 <code>config.json</code> 中：
 </p>
-<ul style="text-align: center; list-style-position: inside;">
+<ul>
   <li><code>gradient.colors</code>：自定义颜色（HEX 格式，如 <code>#A3BFFA</code>）。</li>
   <li><code>gradient.count</code>：渐变颜色个数（2-5，默认 5）。</li>
   <li><code>gradient.saturation</code>：饱和度调整（0.5-2.0，默认 1.0）。</li>
   <li><code>gradient.schedule</code>：刷新频率（例如 <code>"24:30"</code>、<code>"daily"</code>、<code>"weekly"</code>、<code>"monthly"</code>）。</li>
   <li><code>header</code>、<code>intro</code>、<code>footer</code>：设置标题和介绍文字。</li>
 </ul>
-<p style="text-align: center;">
+<p>
   修改 <code>config.json</code> 后，运行 <code>Random Capsule Gradient</code> 工作流程更新 README。
 </p>
 
