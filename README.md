@@ -2,12 +2,12 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:d2eafb,33:feebce,66:ffc569,100:fef4cc&t=1757509502" alt="header" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="header" width="100%"/>
 </p>
 <!-- capsulate-header-end -->
 
 <!-- intro-start -->
-<h3 style="text-align: center;">
+<h3>
   🚀 喜欢写代码、读书、折腾新技术
 </h3>
 <!-- intro-end -->
@@ -19,12 +19,6 @@
   <a href="mailto:blueseagull@860411.xyz">
     <img src="https://img.shields.io/badge/📧%20Email-blueseagull@860411.xyz-D14836?style=flat-square&logo=gmail&logoColor=white"/>
   </a>
-  <!-- 如需更多社交图标，把下面注释打开并替换链接 -->
-  <!--
-  <a href="https://twitter.com/YOUR_TWITTER" target="_blank">
-    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white"/>
-  </a>
-  -->
 </p>
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
@@ -41,7 +35,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,9ebdff,a9dce4,b4e8c7,bde4bd,d0f3f7,ddf9fc,fcc3db,f7dfe5,fececa,e3e3fc,f2e4d4,d5d5f2&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,33,F8C8DC,66,D4F1F4,100,F0E4D7&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
@@ -54,7 +48,7 @@
 <!-- activity-start -->
 <p>
   <a href="https://github.com/BlueSeagull-CHN?tab=repositories" target="_blank">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=BlueSeagull-CHN&bg_color=ffffff&color=708090&line=4c8bf5&point=ff6b6b&area=true&area_color=f0f8ff&v=2" alt="activity"/>
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=BlueSeagull-CHN&bg_color=ffffff&color=708090&line=4c8bf5&point=ff6b6b&area=true&area_color=f0f8ff" alt="activity"/>
   </a>
 </p>
 <!-- activity-end -->
@@ -63,33 +57,28 @@
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
-<!-- 配置说明部分改为左对齐 -->
-<div align="left">
+<div align="center">
 
-<h4>⚙️ 配置说明</h4>
-<p>
+<h4 style="text-align: center;">⚙️ 配置说明</h4>
+<p style="text-align: center;">
   渐变和文字设置在 <code>config.json</code> 中：
 </p>
-<ul>
+<ul style="text-align: center; list-style-position: inside;">
   <li><code>gradient.colors</code>：自定义颜色（HEX 格式，如 <code>#A3BFFA</code>）。</li>
   <li><code>gradient.count</code>：渐变颜色个数（2-5，默认 5）。</li>
   <li><code>gradient.saturation</code>：饱和度调整（0.5-2.0，默认 1.0）。</li>
   <li><code>gradient.schedule</code>：刷新频率（例如 <code>"24:30"</code>、<code>"daily"</code>、<code>"weekly"</code>、<code>"monthly"</code>）。</li>
   <li><code>header</code>、<code>intro</code>、<code>footer</code>：设置标题和介绍文字。</li>
 </ul>
-<p>
+<p style="text-align: center;">
   修改 <code>config.json</code> 后，运行 <code>Random Capsule Gradient</code> 工作流程更新 README。
 </p>
 
-</div>
-
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-
-<div align="center">
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:d2eafb,33:feebce,66:ffc569,100:fef4cc&t=1757509502" alt="footer" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="footer" width="100%"/>
 </p>
 <!-- capsulate-footer-end -->
 
