@@ -90,22 +90,7 @@ jobs:
           echo "Generated capsule_color: $capsule_color"
           echo "Generated stats_color: $stats_color"
 
-      - name: Fetch external README
-        id: fetch_external
-        run: |
-          if ! curl -s -f https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/README.md > external_readme.md; then
-            echo "Failed to fetch external README, using fallback content"
-            echo "<p>Unable to load external resources</p>" > external_readme.md
-          fi
-          # 调整标题层级（# -> ###, ## -> ####），替换 --- 为 <hr>，确保 Markdown 格式
-          perl -pe 's/^#(\s+)/###$1/; s/^##(\s+)/####$1/; s/^---\n/<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">\n/' external_readme.md > external_content.md
-          # 记录内容以供调试
-          echo "Raw external content:"
-          cat external_readme.md
-          echo "Processed external content:"
-          cat external_content.md
-
-      - name: Update README with gradients, text, and external content
+      - name: Update README with gradients and text
         run: |
           # 获取变量
           capsule_color="${{ steps.generate_colors.outputs.capsule_color }}"
@@ -115,15 +100,11 @@ jobs:
           footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
           footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
           intro_text="${{ steps.read_config.outputs.intro_text }}"
-          # 读取外部内容
-          external_content=$(cat external_content.md)
 
           # 定义块
           header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
           intro_block="<!-- intro-start -->\n<h3>\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
-
-          external_block="<!-- external-start -->\n<div>\n<h4>📚 External Resources</h4>\n${external_content}\n</div>\n<!-- external-end -->"
 
           footer_block="<!-- capsulate-footer-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
 
@@ -133,7 +114,6 @@ jobs:
           perl -0777 -pe "
             s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
             s|<!-- intro-start -->.*?<!-- intro-end -->|$intro_block|s;
-            s|<!-- external-start -->.*?<!-- external-end -->|$external_block|s;
             s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end -->|$footer_block|s;
             s|<!-- github-stats-start -->.*?<!-- github-stats-end -->|$stats_block|s;
           " -i README.md
@@ -142,9 +122,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md config.json external_content.md
+          git add README.md config.json
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "🎨 chore: update capsule, stats gradients, intro text, and external content"
+            git commit -m "🎨 chore: update capsule, stats gradients, and intro text"
             git push || {
               echo "Push failed, attempting force push"
               git push --force
