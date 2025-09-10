@@ -18,60 +18,16 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Update gradient
-      run: |
-        # 读取配置文件
-        config=$(cat config.json)
-        candidate_colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['candidate_colors']))")
-        count=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['count'])")
-        saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
-        
-        # 随机选择指定数量的颜色
-        selected_colors=$(echo $candidate_colors | python3 -c "
-        import random, sys
-        colors = sys.stdin.read().split()
-        random.shuffle(colors)
-        print(' '.join(colors[:$count]))
-        ")
-        
-        echo "Selected colors: $selected_colors"
-        
-        # 调整颜色饱和度
-        adjusted_colors=$(python3 adjust_colors.py "$selected_colors" $saturation)
-        echo "Adjusted colors: $adjusted_colors"
-        
-        # 生成胶囊渲染 URL
-        header_text=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['text']))")
-        header_desc=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['desc']))")
-        
-        # 构建渐变颜色参数
-        color_param=""
-        IFS=' ' read -ra color_array <<< "$adjusted_colors"
-        for i in "${!color_array[@]}"; do
-          position=$((i * 100 / (${#color_array[@]} - 1)))
-          color_param+="${position}:${color_array[i]#\#},"
-        done
-        color_param=${color_param%,}
-        
-        # 生成时间戳避免缓存
-        timestamp=$(date +%s)
-        
-        echo "New header URL: https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}"
-        echo "New footer URL: https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}"
-        
-        # 更新 README - 使用更精确的替换
-        sed -i "s|\(https://capsule-render.vercel.app/api?[^\"]*section=header[^\"]*\)|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}\&t=${timestamp}|g" README.md
-        sed -i "s|\(https://capsule-render.vercel.app/api?[^\"]*section=footer[^\"]*\)|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}\&t=${timestamp}|g" README.md
+    - name: Install dependencies
+      run: pip install requests
 
-    - name: Show updated README
-      run: |
-        echo "Updated README content:"
-        cat README.md | grep "capsule-render" | head -2
+    - name: Run update script
+      run: python3 update_capsule.py
 
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
-        git commit -m "Update gradient with new colors [$(date +%Y-%m-%d)]" || echo "No changes to commit"
+        git commit -m "🔄 Update capsule gradient [auto]" || echo "No changes to commit"
         git push
