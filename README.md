@@ -2,29 +2,18 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:D4F1F4,33:F0E4D7,66:E0F7FA,100:C1E1C1" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
+
 <!-- intro-start -->
 <h3>
   🚀 喜欢写代码、读书、折腾新技术
 </h3>
 <!-- intro-end -->
 
-<!-- 技能标签 -->
-<h4>💡 Tech Stack</h4>
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/易语言-0090ff?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMiAyaDIwdjIwSDJWMmptMiAyaDE2djE2SDR2LTE2em0zIDN2MTBoMTBWN0g3em0yIDZoNlY5SDl2NHoiLz48L3N2Zz4=&logoColor=white" alt="易语言"/>
-</p>
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
----
-
-<!-- GitHub 统计 -->
-<p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,F0E4D7&theme=graywhite" alt="stats"/>
-</p>
-<!-- github-stats-end -->
 <!-- 联系方式 -->
 <p>
   <a href="mailto:blueseagull@860411.xyz">
@@ -38,101 +27,56 @@
   -->
 </p>
 
----
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<!-- 技能标签 -->
+<h4>💡 Tech Stack</h4>
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/易语言-0090ff?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMiAyaDIwdjIwSDJWMmptMiAyaDE2djE2SDR2LTE2em0zIDN2MTBoMTBWN0g3em0yIDZoNlY5SDl2NHoiLz48L3N2Zz4=&logoColor=white" alt="易语言"/>
+</p>
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<!-- GitHub 统计 -->
+<!-- github-stats-start -->
+<p>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,F0E4D7&theme=graywhite" alt="stats"/>
+</p>
+<!-- github-stats-end -->
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
 <!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
-
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-<!-- external-start -->
-<h4>📚 External Resources</h4>
-### 私人使用配置
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-#### AdGuardHome-rules
-![Static Badge](https://img.shields.io/badge/AdGuardHome-blue?logo=adguard&logoColor=%236AA127&labelColor=white)  
-AdGuardHome-rules/Whitelist.txt 白名单规则
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/AdGuardHome-rules/Whitelist.txt
-```
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-#### MoonTV
-![Static Badge](https://img.shields.io/badge/MoonTV-blue?logo=moonrepo&logoColor=%23008FC7&labelColor=white)  
-MoonTV/config.json 是MoonTV订阅配置文件，后台添加订阅即可。
-```python
-https://58.haiou.qzz.io/?url=https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/MoonTV/config.json&pretty=true
-```
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-#### IPTV-m3u
-![Static Badge](https://img.shields.io/badge/IPTV-blue?logo=appletv&logoColor=%23000000&labelColor=white)  
-IPTV-M3U订阅地址，每天更新。
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/iptv-api/refs/heads/master/output/result.m3u
-```
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-#### 洛雪音乐源
-![Static Badge](https://img.shields.io/badge/洛雪-blue?logo=applemusic&logoColor=%236AA127&labelColor=white)  
-洛雪音乐源，内容源于网络。
-<details>
-  <summary>点击查看</summary>
-  
-### SixYin
-  
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/sixyin/latest.js
-```
-### Huibq
-
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/huibq/latest.js
-```
-### Flower
-
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/flower/latest.js
-```
-### LX
-
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/lx/latest.js
-```
-### ikun
-
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/ikun/latest.js
-```
-### Grass
-
-```python
-https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/grass/latest.js
-```
-</details>
-
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-#### Github代理
-
-![Static Badge](https://img.shields.io/badge/Github-blue?logo=github&logoColor=blue&labelColor=white)  
-国内使用可以在前面加上下面的地址：
-```python
-https://github.860411.xyz/
-```
-
-例如：
-```python
-https://github.860411.xyz/https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/AdGuardHome-rules/Whitelist.txt
-```
-<!-- external-end -->
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-
-<!-- GitHub 最新动态卡片（自动更新） -->
 <p>
   <a href="https://github.com/BlueSeagull-CHN?tab=repositories" target="_blank">
     <img src="https://github-readme-activity-graph.vercel.app/graph?username=BlueSeagull-CHN&bg_color=ffffff&color=708090&line=4c8bf5&point=ff6b6b&area=true&area_color=f0f8ff" alt="activity"/>
   </a>
 </p>
 
+</div>
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<!-- external-start -->
+<div>
+<h4>📚 External Resources</h4>
+### Exclusive Software Deals for Developers and Startups - Dealsbe
+
+#### Fresh Recommendations
+
+ Post a Deal
+</div>
+<!-- external-end -->
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<div align="center">
+
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:D4F1F4,33:F0E4D7,66:E0F7FA,100:C1E1C1" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="footer"/>
 </p>
 <!-- capsulate-footer-end -->
 
