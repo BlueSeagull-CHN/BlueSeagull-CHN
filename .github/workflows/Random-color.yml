@@ -3,7 +3,7 @@ name: Random Capsule Gradient
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
+    - cron: '30 0 * * *'
 
 jobs:
   update-readme:
@@ -18,10 +18,7 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: List files (for debugging)
-      run: ls -la
-
-    - name: Read config and generate gradient
+    - name: Update gradient
       run: |
         # 读取配置文件
         config=$(cat config.json)
@@ -59,14 +56,22 @@ jobs:
         # 生成时间戳避免缓存
         timestamp=$(date +%s)
         
-        # 更新 README
-        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=200&section=header[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
-        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
+        echo "New header URL: https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}"
+        echo "New footer URL: https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}"
+        
+        # 更新 README - 使用更精确的替换
+        sed -i "s|\(https://capsule-render.vercel.app/api?[^\"]*section=header[^\"]*\)|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}\&t=${timestamp}|g" README.md
+        sed -i "s|\(https://capsule-render.vercel.app/api?[^\"]*section=footer[^\"]*\)|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}\&t=${timestamp}|g" README.md
+
+    - name: Show updated README
+      run: |
+        echo "Updated README content:"
+        cat README.md | grep "capsule-render" | head -2
 
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
-        git commit -m "Update gradient with new random colors [timestamp: $timestamp]" || echo "No changes to commit"
+        git commit -m "Update gradient with new colors [$(date +%Y-%m-%d)]" || echo "No changes to commit"
         git push
