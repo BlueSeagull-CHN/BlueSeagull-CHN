@@ -32,10 +32,9 @@
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
-<!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,fdd8d4,33,feebce,66,9ceada,100,fbb1aa&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
