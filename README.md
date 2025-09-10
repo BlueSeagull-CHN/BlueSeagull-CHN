@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:A3BFFA,66:B9E4C9,100:E0F7FA" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:E0F7FA,66:E6E6FA,100:F8C8DC" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
 
@@ -41,7 +41,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,A3BFFA,B9E4C9,E0F7FA&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,E0F7FA,E6E6FA,F8C8DC&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
@@ -67,7 +67,7 @@
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:A3BFFA,66:B9E4C9,100:E0F7FA" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:E0F7FA,66:E6E6FA,100:F8C8DC" alt="footer"/>
 </p>
 <!-- capsulate-footer-end -->
 
