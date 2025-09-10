@@ -5,13 +5,26 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:B9E4C9,33:AED9E0,66:F0E4D7,100:F8C8DC" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
-
 <!-- intro-start -->
 <h3>
   🚀 喜欢写代码、读书、折腾新技术
 </h3>
 <!-- intro-end -->
 
+<!-- 技能标签 -->
+<h4>💡 Tech Stack</h4>
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/易语言-0090ff?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMiAyaDIwdjIwSDJWMmptMiAyaDE2djE2SDR2LTE2em0zIDN2MTBoMTBWN0g3em0yIDZoNlY5SDl2NHoiLz48L3N2Zz4=&logoColor=white" alt="易语言"/>
+</p>
+
+---
+
+<!-- GitHub 统计 -->
+<p>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,F0E4D7&theme=graywhite" alt="stats"/>
+</p>
+<!-- github-stats-end -->
 <!-- 联系方式 -->
 <p>
   <a href="mailto:blueseagull@860411.xyz">
@@ -25,18 +38,7 @@
   -->
 </p>
 
-<!-- 技能标签 -->
-<h4>💡 Tech Stack</h4>
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/易语言-0090ff?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMiAyaDIwdjIwSDJWMmptMiAyaDE2djE2SDR2LTE2em0zIDN2MTBoMTBWN0g3em0yIDZoNlY5SDl2NHoiLz48L3N2Zz4=&logoColor=white" alt="易语言"/>
-</p>
-
-<!-- GitHub 统计 -->
-<p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,F0E4D7&theme=graywhite" alt="stats"/>
-</p>
-<!-- github-stats-end -->
+---
 
 <!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
