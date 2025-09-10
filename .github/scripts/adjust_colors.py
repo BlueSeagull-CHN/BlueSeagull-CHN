@@ -20,6 +20,7 @@ def adjust_color_saturation(hex_color, saturation):
     # 转换为 HEX
     return f'#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}'
 
+# 保留命令行接口
 if __name__ == "__main__":
     import sys
     # 从命令行参数获取颜色和饱和度
