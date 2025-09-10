@@ -98,10 +98,10 @@ jobs:
             echo "<p>Unable to load external resources</p>" > external_readme.md
           fi
           # 调整标题层级（# -> ###, ## -> ####），替换 --- 为 <hr>
-          external_content=$(cat external_readme.md | perl -pe 's/^# /### /; s/^## /#### /; s/^---\n/<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">\n/')
-          # 转义换行符和双引号
-          external_content=$(echo "$external_content" | perl -pe 's/\n/\\n/g; s/"/\\"/g')
-          echo "external_content=$external_content" >> $GITHUB_OUTPUT
+          perl -pe 's/^# /### /; s/^## /#### /; s/^---\n/<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">\n/' external_readme.md > external_content.md
+          # 记录内容以供调试
+          echo "External content fetched and processed:"
+          cat external_content.md
 
       - name: Update README with gradients, text, and external content
         run: |
@@ -113,7 +113,8 @@ jobs:
           footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
           footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
           intro_text="${{ steps.read_config.outputs.intro_text }}"
-          external_content="${{ steps.fetch_external.outputs.external_content }}"
+          # 读取外部内容
+          external_content=$(cat external_content.md)
 
           # 定义块
           header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
@@ -139,7 +140,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md config.json
+          git add README.md config.json external_content.md
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "🎨 chore: update capsule, stats gradients, intro text, and external content"
             git push || {
