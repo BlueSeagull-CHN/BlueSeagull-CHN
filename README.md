@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:B9E4C9,33:AED9E0,66:F0E4D7,100:F8C8DC" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:FAD2CF,33:D8D8F0,66:A3BFFA,100:D4F1F4" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
 <!-- intro-start -->
@@ -51,7 +51,7 @@
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:B9E4C9,33:AED9E0,66:F0E4D7,100:F8C8DC" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:FAD2CF,33:D8D8F0,66:A3BFFA,100:D4F1F4" alt="footer"/>
 </p>
 <!-- capsulate-footer-end -->
 
