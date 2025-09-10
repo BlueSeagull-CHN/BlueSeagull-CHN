@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:D4F1F4,33:AED9E0,66:B9E4C9,100:FAD2CF" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:F5E1E6,33:FAD2CF,66:D8D8F0,100:A3BFFA" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
 
@@ -41,7 +41,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,D4F1F4,AED9E0,B9E4C9,FAD2CF&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,F5E1E6,FAD2CF,D8D8F0,A3BFFA&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
@@ -51,6 +51,7 @@
 <h4>📌 Latest</h4>
 
 <!-- external-start -->
+<div>
 <h4>📚 External Resources</h4>
 ### 私人使用配置
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
@@ -126,6 +127,7 @@ https://github.860411.xyz/
 ```python
 https://github.860411.xyz/https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/AdGuardHome-rules/Whitelist.txt
 ```
+</div>
 <!-- external-end -->
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 <!-- activity-start -->
@@ -144,7 +146,7 @@ https://github.860411.xyz/https://raw.githubusercontent.com/BlueSeagull-CHN/Pers
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:D4F1F4,33:AED9E0,66:B9E4C9,100:FAD2CF" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:F5E1E6,33:FAD2CF,66:D8D8F0,100:A3BFFA" alt="footer"/>
 </p>
 <!-- capsulate-footer-end -->
 
