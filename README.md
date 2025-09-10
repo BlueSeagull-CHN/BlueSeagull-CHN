@@ -35,7 +35,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0:ffd89b,33:9ceada,66:feebce,100:fdd8d4&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,33,F8C8DC,66,D4F1F4,100,F0E4D7&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
