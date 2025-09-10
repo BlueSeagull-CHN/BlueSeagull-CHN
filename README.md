@@ -42,6 +42,13 @@
 
 <!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+<!-- external-start -->
+<h4>📚 External Resources</h4>
+<!-- external-end -->
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
 <!-- GitHub 最新动态卡片（自动更新） -->
 <p>
   <a href="https://github.com/BlueSeagull-CHN?tab=repositories" target="_blank">
