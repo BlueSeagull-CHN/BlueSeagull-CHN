@@ -18,6 +18,9 @@ jobs:
       with:
         python-version: '3.9'
 
+    - name: List files (for debugging)
+      run: ls -la
+
     - name: Read config and generate gradient
       run: |
         # 读取配置文件
