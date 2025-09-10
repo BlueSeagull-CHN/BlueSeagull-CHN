@@ -211,7 +211,7 @@ def main():
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             stats_bg_param += f"{position}:{color.lstrip('#')},"
-        stats_bg_param = stats_bg_param.rstrip(',')  # 确保这行缩进与for循环对齐
+        stats_bg_param = stats_bg_param.rstrip(',')
 
         # URL编码文本
         encoded_text = urllib.parse.quote(header_text)
