@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:E0F7FA,66:E6E6FA,100:F8C8DC" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,20:F8C8DC,40:D4F1F4,60:E0F7FA,100:F0E4D7" alt="header"/>
 </p>
 <!-- capsulate-header-end -->
 
@@ -41,7 +41,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,E0F7FA,E6E6FA,F8C8DC&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,E0F7FA,F0E4D7&theme=graywhite" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
@@ -49,8 +49,81 @@
 
 <!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<!-- external-start -->
+<div>
+<h4>📚 External Resources</h4>
+### 私人使用配置
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+#### AdGuardHome-rules
+![Static Badge](https://img.shields.io/badge/AdGuardHome-blue?logo=adguard&logoColor=%236AA127&labelColor=white)  
+AdGuardHome-rules/Whitelist.txt 白名单规则
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/AdGuardHome-rules/Whitelist.txt
+```
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+#### MoonTV
+![Static Badge](https://img.shields.io/badge/MoonTV-blue?logo=moonrepo&logoColor=%23008FC7&labelColor=white)  
+MoonTV/config.json 是MoonTV订阅配置文件，后台添加订阅即可。
+```python
+https://58.haiou.qzz.io/?url=https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/MoonTV/config.json&pretty=true
+```
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+#### IPTV-m3u
+![Static Badge](https://img.shields.io/badge/IPTV-blue?logo=appletv&logoColor=%23000000&labelColor=white)  
+IPTV-M3U订阅地址，每天更新。
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/iptv-api/refs/heads/master/output/result.m3u
+```
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+#### 洛雪音乐源
+![Static Badge](https://img.shields.io/badge/洛雪-blue?logo=applemusic&logoColor=%236AA127&labelColor=white)  
+洛雪音乐源，内容源于网络。
+<details>
+  <summary>点击查看</summary>
+  
+### SixYin
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/sixyin/latest.js
+```
+### Huibq
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/huibq/latest.js
+```
+### Flower
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/flower/latest.js
+```
+### LX
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/lx/latest.js
+```
+### ikun
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/ikun/latest.js
+```
+### Grass
+```python
+https://raw.githubusercontent.com/BlueSeagull-CHN/lx-music-source/main/grass/latest.js
+```
+</details>
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+#### Github 代理
+![Static Badge](https://img.shields.io/badge/Github-blue?logo=github&logoColor=blue&labelColor=white)  
+国内使用可以在前面加上下面的地址：
+```python
+https://github.860411.xyz/
+```
+
+例如：
+```python
+https://github.860411.xyz/https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/AdGuardHome-rules/Whitelist.txt
+```
+</div>
+<!-- external-end -->
+
 <!-- activity-start -->
 <p>
   <a href="https://github.com/BlueSeagull-CHN?tab=repositories" target="_blank">
@@ -65,9 +138,27 @@
 
 <div align="center">
 
+<!-- 配置说明 -->
+<h4>⚙️ 配置说明</h4>
+<p>
+  渐变和文字设置在 <code>config.json</code> 中：
+</p>
+<ul>
+  <li><code>gradient.colors</code>：自定义颜色（HEX 格式，如 <code>#A3BFFA</code>）。</li>
+  <li><code>gradient.count</code>：渐变颜色个数（2-5，默认 5）。</li>
+  <li><code>gradient.saturation</code>：饱和度调整（0.5-2.0，默认 1.0）。</li>
+  <li><code>gradient.schedule</code>：刷新频率（例如 <code>"24:30"</code>、<code>"daily"</code>、<code>"weekly"</code>、<code>"monthly"</code>）。</li>
+  <li><code>header</code>、<code>intro</code>、<code>footer</code>：设置标题和介绍文字。</li>
+</ul>
+<p>
+  修改 <code>config.json</code> 后，运行 <code>Random Capsule Gradient</code> 工作流程更新 README。
+</p>
+
+<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:E0F7FA,66:E6E6FA,100:F8C8DC" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,20:F8C8DC,40:D4F1F4,60:E0F7FA,100:F0E4D7" alt="footer"/>
 </p>
 <!-- capsulate-footer-end -->
 
