@@ -205,14 +205,13 @@ def main():
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             color_param += f"{position}:{color.lstrip('#')},"
         color_param = color_param.rstrip(',')
-        
-        # 构建GitHub Stats背景渐变参数（使用逗号分隔）
+
+        # 构建GitHub Stats背景渐变参数（使用冒号分隔位置和颜色）
         stats_bg_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
-            stats_bg_param += f"{position},{color.lstrip('#')},"
-        stats_bg_param = stats_bg_param.rstrip(',')
-        
+            stats_bg_param += f"{position}:{color.lstrip('#')},"
+       stats_bg_param = stats_bg_param.rstrip(',')
         # URL编码文本
         encoded_text = urllib.parse.quote(header_text)
         encoded_desc = urllib.parse.quote(header_desc)
