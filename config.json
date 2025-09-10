@@ -4,7 +4,10 @@
     "desc": "Welcome to my GitHub"
   },
   "footer": {
-    "text": "",  // footer 通常无 text，留空
-    "desc": ""   // footer 通常无 desc，留空
+    "text": "",
+    "desc": ""
+  },
+  "intro": {
+    "text": "🚀 喜欢写代码、读书、折腾新技术"
   }
 }
