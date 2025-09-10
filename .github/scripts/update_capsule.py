@@ -205,14 +205,14 @@ def main():
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             color_param += f"{position}:{color.lstrip('#')},"
         color_param = color_param.rstrip(',')
-
-        # 构建GitHub Stats背景渐变参数（使用冒号分隔位置和颜色）
+        
+        # 构建GitHub Stats背景渐变参数（使用冒号分隔）
         stats_bg_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             stats_bg_param += f"{position}:{color.lstrip('#')},"
         stats_bg_param = stats_bg_param.rstrip(',')
-
+        
         # URL编码文本
         encoded_text = urllib.parse.quote(header_text)
         encoded_desc = urllib.parse.quote(header_desc)
@@ -220,7 +220,7 @@ def main():
         # 生成新的URL
         new_header_url = f"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text={encoded_text}&desc={encoded_desc}&descAlignY=55&color={color_param}&t={timestamp}"
         new_footer_url = f"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color={color_param}&t={timestamp}"
-        new_stats_url = f"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color={stats_bg_param}&theme=graywhite"
+        new_stats_url = f"https://github-readme-stats.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color={stats_bg_param}&theme=graywhite"
         
         print(f"🔗 新的Header URL: {new_header_url}")
         print(f"🔗 新的Footer URL: {new_footer_url}")
@@ -248,8 +248,8 @@ def main():
             content
         )
         
-        # 替换GitHub Stats背景（使用更精确的匹配）
-        stats_pattern = r'https://github-readme-stats-bay\.vercel\.app/api\?[^"]*bg_color=[^"&]*[^"]*'
+        # 替换GitHub Stats背景
+        stats_pattern = r'https://github-readme-stats\.vercel\.app/api\?[^"]*bg_color=[^"&]*[^"]*'
         content = re.sub(stats_pattern, new_stats_url, content)
         
         # 写回README
