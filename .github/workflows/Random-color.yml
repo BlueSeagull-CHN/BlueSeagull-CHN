@@ -17,9 +17,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3  # 检出代码库
 
-      - name: Random pick gradient & update README
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq  # 安装 jq 用于解析 JSON
+
+      - name: Read text from config.json
+        id: read_config
         run: |
-          # 清新淡雅的颜色池，随机挑选 4 种组成渐变
+          # 读取 config.json 中的文字
+          header_text=$(jq -r '.header.text' config.json)
+          header_desc=$(jq -r '.header.desc' config.json)
+          footer_text=$(jq -r '.footer.text' config.json)
+          footer_desc=$(jq -r '.footer.desc' config.json)
+          intro_text=$(jq -r '.intro.text' config.json)
+          # URL 编码（仅对 capsule-render 的参数）
+          header_text_encoded=$(echo -n "$header_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
+          header_desc_encoded=$(echo -n "$header_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
+          footer_text_encoded=$(echo -n "$footer_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
+          footer_desc_encoded=$(echo -n "$footer_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
+          # 输出到后续步骤
+          echo "header_text_encoded=$header_text_encoded" >> $GITHUB_OUTPUT
+          echo "header_desc_encoded=$header_desc_encoded" >> $GITHUB_OUTPUT
+          echo "footer_text_encoded=$footer_text_encoded" >> $GITHUB_OUTPUT
+          echo "footer_desc_encoded=$footer_desc_encoded" >> $GITHUB_OUTPUT
+          echo "intro_text=$intro_text" >> $GITHUB_OUTPUT
+          echo "Read header_text: $header_text"
+          echo "Read header_desc: $header_desc"
+          echo "Read intro_text: $intro_text"
+
+      - name: Generate random gradient colors
+        id: generate_colors
+        run: |
+          # 清新淡雅的颜色池
           colors=(
             "A3BFFA"  # 浅紫蓝
             "AED9E0"  # 湖蓝
@@ -36,27 +64,50 @@ jobs:
           )
           # 随机挑选 4 个颜色
           selected_colors=($(shuf -n 4 -e "${colors[@]}"))
-          color="0:${selected_colors[0]},33:${selected_colors[1]},66:${selected_colors[2]},100:${selected_colors[3]}"
+          # capsule-render 格式: 0:hex1,33:hex2,66:hex3,100:hex4
+          capsule_color="0:${selected_colors[0]},33:${selected_colors[1]},66:${selected_colors[2]},100:${selected_colors[3]}"
+          # github-readme-stats 格式: angle,hex1,hex2,hex3,hex4
+          stats_color="0,${selected_colors[0]},${selected_colors[1]},${selected_colors[2]},${selected_colors[3]}"
+          # 输出到后续步骤
+          echo "capsule_color=$capsule_color" >> $GITHUB_OUTPUT
+          echo "stats_color=$stats_color" >> $GITHUB_OUTPUT
+          echo "Generated capsule_color: $capsule_color"
+          echo "Generated stats_color: $stats_color"
 
-          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=${color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
+      - name: Update README with gradients and text
+        run: |
+          # 获取颜色和文字变量
+          capsule_color="${{ steps.generate_colors.outputs.capsule_color }}"
+          stats_color="${{ steps.generate_colors.outputs.stats_color }}"
+          header_text_encoded="${{ steps.read_config.outputs.header_text_encoded }}"
+          header_desc_encoded="${{ steps.read_config.outputs.header_desc_encoded }}"
+          footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
+          footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
+          intro_text="${{ steps.read_config.outputs.intro_text }}"
 
-          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
+          # 定义要替换的块
+          header_block="<!-- capsulate-header-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
-          # 使用 Perl 替换 README.md 中的 header 和 footer 部分
+          intro_block="<!-- intro-start -->\n<h3 align=\"center\">\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
+
+          footer_block="<!-- capsulate-footer-start -->\n<p align=\"center\">\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
+
+          stats_block="<!-- github-stats-start -->\n<p align=\"center\">\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
+
+          # 使用 Perl 替换 README.md 中的块
           perl -0777 -pe "
             s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
+            s|<!-- intro-start -->.*?<!-- intro-end -->|$intro_block|s;
             s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end -->|$footer_block|s;
+            s|<!-- github-stats-start -->.*?<!-- github-stats-end -->|$stats_block|s;
           " -i README.md
-
-          # 调试：输出生成的颜色值
-          echo "Generated color: $color"
 
       - name: Commit & push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
+          git add README.md config.json
           git diff --quiet && git diff --staged --quiet || (
-            git commit -m "🎨 chore: update capsule gradient"
+            git commit -m "🎨 chore: update capsule, stats gradients, and intro text"
             git push
           )
