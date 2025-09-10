@@ -7,7 +7,7 @@
 <!-- capsulate-header-end -->
 
 <!-- intro-start -->
-<h3>
+<h3 style="text-align: center;">
   🚀 喜欢写代码、读书、折腾新技术
 </h3>
 <!-- intro-end -->
