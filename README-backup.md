@@ -2,12 +2,12 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7&v=1" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7&v=2" alt="header" width="100%"/>
 </p>
 <!-- capsulate-header-end -->
 
 <!-- intro-start -->
-<h3 style="text-align: center;">
+<h3>
   🚀 喜欢写代码、读书、折腾新技术
 </h3>
 <!-- intro-end -->
@@ -41,7 +41,7 @@
 <!-- GitHub 统计 -->
 <!-- github-stats-start -->
 <p>
-  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,a3bffa,aed9e0,b9e3c9,c1e1c1,d4f1f4,e0f7fa,f7c8dc,f5e1e6,fad1ce,e5e5fa,f0e3d6,d7d7f0&theme=graywhite" alt="stats"/>
+  <img height="160" src="https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=0,C1E1C1,F8C8DC,D4F1F4,F0E4D7&theme=graywhite&v=2" alt="stats"/>
 </p>
 <!-- github-stats-end -->
 
@@ -54,7 +54,7 @@
 <!-- activity-start -->
 <p>
   <a href="https://github.com/BlueSeagull-CHN?tab=repositories" target="_blank">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=BlueSeagull-CHN&bg_color=ffffff&color=708090&line=4c8bf5&point=ff6b6b&area=true&area_color=f0f8ff" alt="activity"/>
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=BlueSeagull-CHN&bg_color=ffffff&color=708090&line=4c8bf5&point=ff6b6b&area=true&area_color=f0f8ff&v=2" alt="activity"/>
   </a>
 </p>
 <!-- activity-end -->
@@ -63,28 +63,33 @@
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
-<div align="center">
+<!-- 配置说明部分改为左对齐 -->
+<div align="left">
 
-<h4 style="text-align: center;">⚙️ 配置说明</h4>
-<p style="text-align: center;">
+<h4>⚙️ 配置说明</h4>
+<p>
   渐变和文字设置在 <code>config.json</code> 中：
 </p>
-<ul style="text-align: center; list-style-position: inside;">
+<ul>
   <li><code>gradient.colors</code>：自定义颜色（HEX 格式，如 <code>#A3BFFA</code>）。</li>
   <li><code>gradient.count</code>：渐变颜色个数（2-5，默认 5）。</li>
   <li><code>gradient.saturation</code>：饱和度调整（0.5-2.0，默认 1.0）。</li>
   <li><code>gradient.schedule</code>：刷新频率（例如 <code>"24:30"</code>、<code>"daily"</code>、<code>"weekly"</code>、<code>"monthly"</code>）。</li>
   <li><code>header</code>、<code>intro</code>、<code>footer</code>：设置标题和介绍文字。</li>
 </ul>
-<p style="text-align: center;">
+<p>
   修改 <code>config.json</code> 后，运行 <code>Random Capsule Gradient</code> 工作流程更新 README。
 </p>
 
+</div>
+
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
+
+<div align="center">
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7&v=1" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7&v=2" alt="footer" width="100%"/>
 </p>
 <!-- capsulate-footer-end -->
 
