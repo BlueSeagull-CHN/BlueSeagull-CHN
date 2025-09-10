@@ -90,9 +90,22 @@ jobs:
           echo "Generated capsule_color: $capsule_color"
           echo "Generated stats_color: $stats_color"
 
-      - name: Update README with gradients and text
+      - name: Fetch external README
+        id: fetch_external
         run: |
-          # 获取颜色和文字变量
+          if ! curl -s -f https://raw.githubusercontent.com/BlueSeagull-CHN/PersonalConfiguration/refs/heads/main/README.md > external_readme.md; then
+            echo "Failed to fetch external README, using fallback content"
+            echo "<p>Unable to load external resources</p>" > external_readme.md
+          fi
+          # 调整标题层级（# -> ###, ## -> ####），替换 --- 为 <hr>
+          external_content=$(cat external_readme.md | perl -pe 's/^# /### /; s/^## /#### /; s/^---\n/<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">\n/')
+          # 转义换行符和双引号
+          external_content=$(echo "$external_content" | perl -pe 's/\n/\\n/g; s/"/\\"/g')
+          echo "external_content=$external_content" >> $GITHUB_OUTPUT
+
+      - name: Update README with gradients, text, and external content
+        run: |
+          # 获取变量
           capsule_color="${{ steps.generate_colors.outputs.capsule_color }}"
           stats_color="${{ steps.generate_colors.outputs.stats_color }}"
           header_text_encoded="${{ steps.read_config.outputs.header_text_encoded }}"
@@ -100,20 +113,24 @@ jobs:
           footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
           footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
           intro_text="${{ steps.read_config.outputs.intro_text }}"
+          external_content="${{ steps.fetch_external.outputs.external_content }}"
 
-          # 定义要替换的块
+          # 定义块
           header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
 
           intro_block="<!-- intro-start -->\n<h3>\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
+
+          external_block="<!-- external-start -->\n<h4>📚 External Resources</h4>\n${external_content}\n<!-- external-end -->"
 
           footer_block="<!-- capsulate-footer-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
 
           stats_block="<!-- github-stats-start -->\n<p>\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
 
-          # 使用 Perl 替换 README.md 中的块
+          # 使用 Perl 替换
           perl -0777 -pe "
             s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
             s|<!-- intro-start -->.*?<!-- intro-end -->|$intro_block|s;
+            s|<!-- external-start -->.*?<!-- external-end -->|$external_block|s;
             s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end -->|$footer_block|s;
             s|<!-- github-stats-start -->.*?<!-- github-stats-end -->|$stats_block|s;
           " -i README.md
@@ -124,7 +141,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md config.json
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "🎨 chore: update capsule, stats gradients, and intro text"
+            git commit -m "🎨 chore: update capsule, stats gradients, intro text, and external content"
             git push || {
               echo "Push failed, attempting force push"
               git push --force
