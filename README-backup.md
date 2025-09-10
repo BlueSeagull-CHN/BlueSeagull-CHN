@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:#a3bffa,25:#aed9e0,50:#b9e3c9,75:#c1e1c1,100:#d4f1f4125:#e0f7fa150:#f7c8dc175:#f5e1e6200:#fad1ce225:#e5e5fa250:#f0e3d6275:#d7d7f0" alt="header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=%F0%9F%91%8B%20Hi%2C%20I%27m%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="header" width="100%"/>
 </p>
 <!-- capsulate-header-end -->
 
@@ -89,7 +89,7 @@
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:#a3bffa,25:#aed9e0,50:#b9e3c9,75:#c1e1c1,100:#d4f1f4125:#e0f7fa150:#f7c8dc175:#f5e1e6200:#fad1ce225:#e5e5fa250:#f0e3d6275:#d7d7f0" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="footer" width="100%"/>
 </p>
 <!-- capsulate-footer-end -->
 
