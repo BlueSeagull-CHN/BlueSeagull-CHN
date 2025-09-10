@@ -1,0 +1,16 @@
+{
+  "gradient": {
+    "candidate_colors": ["#COLOR1", "#COLOR2", "#COLOR3"],
+    "count": 4,
+    "saturation": 1.0,
+    "schedule": "daily"
+  },
+  "header": {
+    "text": "Your header text",
+    "desc": "Your description"
+  },
+  "footer": {
+    "text": "",
+    "desc": ""
+  }
+}
