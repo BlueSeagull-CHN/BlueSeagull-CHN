@@ -22,11 +22,22 @@ jobs:
       run: |
         # 读取配置文件
         config=$(cat config.json)
-        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['colors']))")
+        candidate_colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['candidate_colors']))")
+        count=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['count'])")
         saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
         
+        # 随机选择指定数量的颜色
+        selected_colors=$(echo $candidate_colors | python3 -c "
+        import random, sys
+        colors = sys.stdin.read().split()
+        random.shuffle(colors)
+        print(' '.join(colors[:$count]))
+        ")
+        
+        echo "Selected colors: $selected_colors"
+        
         # 调整颜色饱和度
-        adjusted_colors=$(python3 adjust_colors.py "$colors" $saturation)
+        adjusted_colors=$(python3 adjust_colors.py "$selected_colors" $saturation)
         echo "Adjusted colors: $adjusted_colors"
         
         # 生成胶囊渲染 URL
@@ -54,5 +65,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
-        git commit -m "Update gradient with timestamp $timestamp" || echo "No changes to commit"
+        git commit -m "Update gradient with new random colors [timestamp: $timestamp]" || echo "No changes to commit"
         git push
