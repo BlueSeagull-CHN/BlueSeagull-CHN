@@ -1,32 +1,24 @@
 {
+  "gradient": {
+    "candidate_colors": [
+      "#C1E1C1", "#F8C8DC", "#D4F1F4", "#F0E4D7",
+      "#A3E4D7", "#FADBD8", "#D6EAF8", "#F9E79F",
+      "#D5F5E3", "#F5EEF8", "#EBF5FB", "#FAE5D3",
+      "#E8F8F5", "#FDEBD0", "#D6DBDF", "#F2D7D5",
+      "#D1F2EB", "#FCF3CF", "#D6EAF8", "#FAD7A0",
+      "#ABEBC6", "#EDBB99", "#AED6F1", "#F5B7B1",
+      "#82E0AA", "#F8C471", "#85C1E9", "#F1948A"
+    ],
+    "count": 4,
+    "saturation": 1.2,
+    "schedule": "daily"
+  },
   "header": {
     "text": "👋 Hi, I'm BlueSeagull",
     "desc": "Welcome to my GitHub"
   },
-  "intro": {
-    "text": "🚀 喜欢写代码、读书、折腾新技术"
-  },
   "footer": {
     "text": "",
     "desc": ""
-  },
-  "gradient": {
-    "colors": [
-      "#A3BFFA",
-      "#AED9E0",
-      "#B9E4C9",
-      "#C1E1C1",
-      "#D4F1F4",
-      "#E0F7FA",
-      "#F8C8DC",
-      "#F5E1E6",
-      "#FAD2CF",
-      "#E6E6FA",
-      "#F0E4D7",
-      "#D8D8F0"
-    ],
-    "count": 5,
-    "saturation": 1.0,
-    "schedule": "24:30"
   }
 }
