@@ -1,233 +1,58 @@
 name: Random Capsule Gradient
 
 on:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: '30 0 * * *'
   workflow_dispatch:
-
-permissions:
-  contents: write
+  schedule:
+    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
 
 jobs:
-  gradient:
+  update-readme:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Backup README.md
-        run: |
-          if [ -f README.md ]; then
-            cp README.md README-backup.md
-            git add README-backup.md
-            git commit -m "Backup README.md before update" || true
-            echo "Backed up README.md to README-backup.md"
-          else
-            echo "README.md not found, skipping backup"
-          fi
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-      - name: Install jq and Python
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq python3
+    - name: Read config and generate gradient
+      run: |
+        # 读取配置文件
+        config=$(cat config.json)
+        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['colors']))")
+        saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
+        
+        # 调整颜色饱和度
+        adjusted_colors=$(python3 adjust_colors.py "$colors" $saturation)
+        echo "Adjusted colors: $adjusted_colors"
+        
+        # 生成胶囊渲染 URL
+        header_text=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['text']))")
+        header_desc=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['desc']))")
+        
+        # 构建渐变颜色参数
+        color_param=""
+        IFS=' ' read -ra color_array <<< "$adjusted_colors"
+        for i in "${!color_array[@]}"; do
+          position=$((i * 100 / (${#color_array[@]} - 1)))
+          color_param+="${position}:${color_array[i]#\#},"
+        done
+        color_param=${color_param%,}
+        
+        # 生成时间戳避免缓存
+        timestamp=$(date +%s)
+        
+        # 更新 README
+        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=200&section=header[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
+        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
 
-      - name: Check config.json existence and validity
-        run: |
-          if [ ! -f config.json ]; then
-            echo "Error: config.json not found, creating default config"
-            echo '{
-              "header": {"text": "👋 Hi, I'\''m BlueSeagull", "desc": "Welcome to my GitHub"},
-              "intro": {"text": "🚀 喜欢写代码、读书、折腾新技术"},
-              "footer": {"text": "", "desc": ""},
-              "gradient": {
-                "colors": ["#A3BFFA", "#AED9E0", "#B9E4C9", "#C1E1C1", "#D4F1F4", "#E0F7FA", "#F8C8DC", "#F5E1E6", "#FAD2CF", "#E6E6FA", "#F0E4D7", "#D8D8F0"],
-                "count": 5,
-                "saturation": 1.0,
-                "schedule": "24:30"
-              }
-            }' > config.json
-            git add config.json
-            git commit -m "Add default config.json" || true
-          else
-            if ! jq . config.json >/dev/null 2>&1; then
-              echo "Error: config.json is invalid, replacing with default config"
-              mv config.json config.json.invalid
-              echo '{
-                "header": {"text": "👋 Hi, I'\''m BlueSeagull", "desc": "Welcome to my GitHub"},
-                "intro": {"text": "🚀 喜欢写代码、读书、折腾新技术"},
-                "footer": {"text": "", "desc": ""},
-                "gradient": {
-                  "colors": ["#A3BFFA", "#AED9E0", "#B9E4C9", "#C1E1C1", "#D4F1F4", "#E0F7FA", "#F8C8DC", "#F5E1E6", "#FAD2CF", "#E6E6FA", "#F0E4D7", "#D8D8F0"],
-                  "count": 5,
-                  "saturation": 1.0,
-                  "schedule": "24:30"
-                }
-              }' > config.json
-              git add config.json config.json.invalid
-              git commit -m "Replace invalid config.json with default config" || true
-            fi
-          fi
-
-      - name: Read config.json
-        id: read_config
-        run: |
-          header_text=$(jq -r '.header.text // "👋 Hi, I'\''m BlueSeagull"' config.json)
-          header_desc=$(jq -r '.header.desc // "Welcome to my GitHub"' config.json)
-          footer_text=$(jq -r '.footer.text // ""' config.json)
-          footer_desc=$(jq -r '.footer.desc // ""' config.json)
-          intro_text=$(jq -r '.intro.text // "🚀 喜欢写代码、读书、折腾新技术"' config.json)
-          header_text_encoded=$(echo -n "$header_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
-          header_desc_encoded=$(echo -n "$header_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
-          footer_text_encoded=$(echo -n "$footer_text" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
-          footer_desc_encoded=$(echo -n "$footer_desc" | python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read()))")
-          colors=$(jq -r '.gradient.colors // ["#A3BFFA", "#AED9E0", "#B9E4C9", "#C1E1C1", "#D4F1F4", "#E0F7FA", "#F8C8DC", "#F5E1E6", "#FAD2CF", "#E6E6FA", "#F0E4D7", "#D8D8F0"] | join(" ")' config.json)
-          count=$(jq -r '.gradient.count // 5' config.json)
-          saturation=$(jq -r '.gradient.saturation // 1.0' config.json)
-          schedule=$(jq -r '.gradient.schedule // "24:30"' config.json)
-          echo "header_text_encoded=$header_text_encoded" >> $GITHUB_OUTPUT
-          echo "header_desc_encoded=$header_desc_encoded" >> $GITHUB_OUTPUT
-          echo "footer_text_encoded=$footer_text_encoded" >> $GITHUB_OUTPUT
-          echo "footer_desc_encoded=$footer_desc_encoded" >> $GITHUB_OUTPUT
-          echo "intro_text=$intro_text" >> $GITHUB_OUTPUT
-          echo "colors=$colors" >> $GITHUB_OUTPUT
-          echo "count=$count" >> $GITHUB_OUTPUT
-          echo "saturation=$saturation" >> $GITHUB_OUTPUT
-          echo "schedule=$schedule" >> $GITHUB_OUTPUT
-          echo "Read header_text: $header_text"
-          echo "Read header_desc: $header_desc"
-          echo "Read intro_text: $intro_text"
-          echo "Read gradient.colors: $colors"
-          echo "Read gradient.count: $count"
-          echo "Read gradient.saturation: $saturation"
-          echo "Read gradient.schedule: $schedule"
-
-      - name: Validate and adjust colors
-        id: adjust_colors
-        run: |
-          colors="${{ steps.read_config.outputs.colors }}"
-          count="${{ steps.read_config.outputs.count }}"
-          saturation="${{ steps.read_config.outputs.saturation }}"
-          if ! [[ "$count" =~ ^[2-5]$ ]]; then
-            echo "Error: gradient.count must be between 2-5, using default 5"
-            count=5
-          fi
-          if ! echo "$saturation" | grep -qE '^[0-1]\.[0-9]{1,2}$|^2\.0$'; then
-            echo "Error: gradient.saturation must be between 0.5-2.0, using default 1.0"
-            saturation=1.0
-          fi
-          valid_colors=()
-          for color in $colors; do
-            if [[ "$color" =~ ^#[0-9A-Fa-f]{6}$ ]]; then
-              valid_colors+=("$color")
-            else
-              echo "Warning: Invalid color $color, skipping"
-            fi
-          done
-          default_colors=("A3BFFA" "AED9E0" "B9E4C9" "C1E1C1" "D4F1F4" "E0F7FA" "F8C8DC" "F5E1E6" "FAD2CF" "E6E6FA" "F0E4D7" "D8D8F0")
-          while [ ${#valid_colors[@]} -lt $count ]; do
-            valid_colors+=("${default_colors[$((RANDOM % ${#default_colors[@]}))]}")
-          done
-          adjusted_colors=$(python3 .github/scripts/adjust_colors.py "${valid_colors[*]}" "$saturation")
-          selected_colors=($(echo "$adjusted_colors" | shuf -n $count))
-          capsule_color=""
-          if [ $count -eq 1 ]; then
-            capsule_color="0:${selected_colors[0]}"
-          else
-            step=$(echo "scale=2; 100 / ($count - 1)" | bc)
-            for i in "${!selected_colors[@]}"; do
-              percentage=$(echo "scale=0; $i * $step / 1" | bc)
-              capsule_color+="$percentage:${selected_colors[$i]}"
-              [ $i -lt $((count-1)) ] && capsule_color+=","
-            done
-          fi
-          stats_color="0"
-          for color in "${selected_colors[@]}"; do
-            stats_color+=",${color#\#}"
-          done
-          echo "capsule_color=$capsule_color" >> $GITHUB_OUTPUT
-          echo "stats_color=$stats_color" >> $GITHUB_OUTPUT
-          echo "Adjusted colors: ${selected_colors[*]}"
-          echo "Generated capsule_color: $capsule_color"
-          echo "Generated stats_color: $stats_color"
-
-      - name: Parse schedule
-        id: parse_schedule
-        run: |
-          schedule="${{ steps.read_config.outputs.schedule }}"
-          cron=""
-          case "$schedule" in
-            "daily")
-              cron="0 0 * * *"
-              ;;
-            "weekly")
-              cron="0 0 * * 0"
-              ;;
-            "monthly")
-              cron="0 0 1 * *"
-              ;;
-            *[0-2][0-9]:[0-5][0-9]*)
-              hour=$(echo "$schedule" | cut -d':' -f1)
-              minute=$(echo "$schedule" | cut -d':' -f2)
-              if [ "$hour" = "24" ]; then
-                hour="0"
-              fi
-              if [[ "$hour" =~ ^[0-2][0-9]$ && "$minute" =~ ^[0-5][0-9]$ ]]; then
-                cron="$minute $hour * * *"
-              else
-                echo "Error: Invalid time format $schedule, using default daily (0 0 * * *)"
-                cron="0 0 * * *"
-              fi
-              ;;
-            *)
-              echo "Error: Invalid schedule format $schedule, using default daily (0 0 * * *)"
-              cron="0 0 * * *"
-              ;;
-          esac
-          echo "Parsed cron expression: $cron"
-          echo "Please manually update Random-color.yml on.schedule.cron to '$cron'"
-          echo "cron=$cron" >> $GITHUB_OUTPUT
-
-      - name: Update README with gradients and text
-        run: |
-          capsule_color="${{ steps.adjust_colors.outputs.capsule_color }}"
-          stats_color="${{ steps.adjust_colors.outputs.stats_color }}"
-          header_text_encoded="${{ steps.read_config.outputs.header_text_encoded }}"
-          header_desc_encoded="${{ steps.read_config.outputs.header_desc_encoded }}"
-          footer_text_encoded="${{ steps.read_config.outputs.footer_text_encoded }}"
-          footer_desc_encoded="${{ steps.read_config.outputs.footer_desc_encoded }}"
-          intro_text="${{ steps.read_config.outputs.intro_text }}"
-
-          header_block="<!-- capsulate-header-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text_encoded}&desc=${header_desc_encoded}&descAlignY=55&color=${capsule_color}\" alt=\"header\"/>\n</p>\n<!-- capsulate-header-end -->"
-
-          intro_block="<!-- intro-start -->\n<h3 style=\"text-align: center;\">\n  ${intro_text}\n</h3>\n<!-- intro-end -->"
-
-          footer_block="<!-- capsulate-footer-start -->\n<p>\n  <img src=\"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${capsule_color}\" alt=\"footer\"/>\n</p>\n<!-- capsulate-footer-end -->"
-
-          stats_block="<!-- github-stats-start -->\n<p>\n  <img height=\"160\" src=\"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color=${stats_color}&theme=graywhite\" alt=\"stats\"/>\n</p>\n<!-- github-stats-end -->"
-
-          perl -0777 -pe "
-            s|<!-- capsulate-header-start -->.*?<!-- capsulate-header-end -->|$header_block|s;
-            s|<!-- intro-start -->.*?<!-- intro-end -->|$intro_block|s;
-            s|<!-- capsulate-footer-start -->.*?<!-- capsulate-footer-end -->|$footer_block|s;
-            s|<!-- github-stats-start -->.*?<!-- github-stats-end -->|$stats_block|s;
-          " -i README.md
-
-      - name: Commit & push if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md README-backup.md config.json .github/scripts/adjust_colors.py
-          if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "Update gradient colors, text, and backup README"
-            git push || {
-              echo "Push failed, attempting force push"
-              git push --force
-            }
-          else
-            echo "No changes to commit"
-          fi
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git commit -m "Update gradient with timestamp $timestamp" || echo "No changes to commit"
+        git push
