@@ -199,12 +199,19 @@ def main():
             # 缓存新的渐变配置
             cache_gradient(adjusted_colors, timestamp)
         
-        # 构建渐变颜色参数
+        # 构建胶囊渐变颜色参数
         color_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             color_param += f"{position}:{color.lstrip('#')},"
         color_param = color_param.rstrip(',')
+        
+        # 构建GitHub Stats背景渐变参数
+        stats_bg_param = ""
+        for i, color in enumerate(adjusted_colors):
+            position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
+            stats_bg_param += f"{position}:{color.lstrip('#')},"
+        stats_bg_param = stats_bg_param.rstrip(',')
         
         # URL编码文本
         encoded_text = urllib.parse.quote(header_text)
@@ -213,9 +220,11 @@ def main():
         # 生成新的URL
         new_header_url = f"https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text={encoded_text}&desc={encoded_desc}&descAlignY=55&color={color_param}&t={timestamp}"
         new_footer_url = f"https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color={color_param}&t={timestamp}"
+        new_stats_url = f"https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color={stats_bg_param}&theme=graywhite"
         
         print(f"🔗 新的Header URL: {new_header_url}")
         print(f"🔗 新的Footer URL: {new_footer_url}")
+        print(f"📊 新的Stats URL: {new_stats_url}")
         
         # 读取并更新README
         readme_path = 'README.md'
@@ -225,17 +234,23 @@ def main():
         with open(readme_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # 替换URL
+        # 替换header URL
         content = re.sub(
             r'src="https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*"',
             f'src="{new_header_url}"',
             content
         )
+        
+        # 替换footer URL
         content = re.sub(
             r'src="https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*"',
             f'src="{new_footer_url}"',
             content
         )
+        
+        # 替换GitHub Stats背景
+        stats_pattern = r'https://github-readme-stats-bay\.vercel\.app/api\?[^"]*bg_color=[^"&]*[^"]*'
+        content = re.sub(stats_pattern, new_stats_url, content)
         
         # 写回README
         with open(readme_path, 'w', encoding='utf-8') as f:
