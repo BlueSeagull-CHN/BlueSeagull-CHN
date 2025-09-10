@@ -199,14 +199,14 @@ def main():
             # 缓存新的渐变配置
             cache_gradient(adjusted_colors, timestamp)
         
-        # 构建胶囊渐变颜色参数（使用冒号分隔）
+        # 构建胶囊渐变颜色参数
         color_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             color_param += f"{position}:{color.lstrip('#')},"
         color_param = color_param.rstrip(',')
         
-        # 构建GitHub Stats背景渐变参数（使用冒号分隔）
+        # 构建GitHub Stats背景渐变参数
         stats_bg_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
