@@ -1,6 +1,5 @@
-# 调整颜色饱和度的 Python 脚本
+# adjust_colors.py - 调整颜色饱和度
 import colorsys
-import sys
 
 def adjust_color_saturation(hex_color, saturation):
     """调整单个颜色的饱和度"""
@@ -22,6 +21,7 @@ def adjust_color_saturation(hex_color, saturation):
     return f'#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}'
 
 if __name__ == "__main__":
+    import sys
     # 从命令行参数获取颜色和饱和度
     colors = sys.argv[1].split() if len(sys.argv) > 1 else []
     saturation = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
