@@ -5,10 +5,17 @@ import json
 import random
 import urllib.parse
 import re
+import sys
+import os
+
+# 添加 scripts 目录到 Python 路径
+sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
+
+# 现在可以正常导入
 from adjust_colors import adjust_color_saturation
 
 def main():
-    # 读取配置文件
+    # 读取配置文件（现在在根目录）
     with open('config.json', 'r', encoding='utf-8') as f:
         config = json.load(f)
     
