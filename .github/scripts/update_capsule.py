@@ -199,18 +199,18 @@ def main():
             # 缓存新的渐变配置
             cache_gradient(adjusted_colors, timestamp)
         
-        # 构建胶囊渐变颜色参数
+        # 构建胶囊渐变颜色参数（使用冒号分隔）
         color_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
             color_param += f"{position}:{color.lstrip('#')},"
         color_param = color_param.rstrip(',')
         
-        # 构建GitHub Stats背景渐变参数
+        # 构建GitHub Stats背景渐变参数（使用逗号分隔）
         stats_bg_param = ""
         for i, color in enumerate(adjusted_colors):
             position = i * 100 // (len(adjusted_colors) - 1) if len(adjusted_colors) > 1 else 0
-            stats_bg_param += f"{position}:{color.lstrip('#')},"
+            stats_bg_param += f"{position},{color.lstrip('#')},"
         stats_bg_param = stats_bg_param.rstrip(',')
         
         # URL编码文本
@@ -248,9 +248,8 @@ def main():
             content
         )
         
-        # 替换GitHub Stats背景
+        # 替换GitHub Stats背景（使用更精确的匹配）
         stats_pattern = r'https://github-readme-stats-bay\.vercel\.app/api\?[^"]*bg_color=[^"&]*[^"]*'
-        new_stats_url = f'https://github-readme-stats-bay.vercel.app/api?username=BlueSeagull-CHN&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&line_height=21&bg_color={stats_bg_param}&theme=graywhite'
         content = re.sub(stats_pattern, new_stats_url, content)
         
         # 写回README
