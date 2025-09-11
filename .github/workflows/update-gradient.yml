@@ -3,7 +3,7 @@ name: Random Capsule Gradient
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
+    - cron: '30 0 * * *'
 
 jobs:
   update-readme:
@@ -12,15 +12,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # 获取所有历史记录
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
-    - name: Read config and generate gradient
+    - name: Update gradient
       run: |
         # 读取配置文件
         config=$(cat config.json)
@@ -28,7 +26,7 @@ jobs:
         count=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['count'])")
         saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
         
-        # 随机选择指定数量的颜色
+        # 随机选择颜色
         selected_colors=$(echo $colors | python3 -c "
         import random, sys
         colors = sys.stdin.read().split()
@@ -36,17 +34,10 @@ jobs:
         print(' '.join(colors[:$count]))
         ")
         
-        echo "Selected colors: $selected_colors"
-        
         # 调整颜色饱和度
         adjusted_colors=$(python3 adjust_colors.py "$selected_colors" $saturation)
-        echo "Adjusted colors: $adjusted_colors"
         
-        # 生成胶囊渲染 URL
-        header_text=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['text']))")
-        header_desc=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['desc']))")
-        
-        # 构建渐变颜色参数
+        # 构建渐变参数
         color_param=""
         IFS=' ' read -ra color_array <<< "$adjusted_colors"
         for i in "${!color_array[@]}"; do
@@ -55,30 +46,26 @@ jobs:
         done
         color_param=${color_param%,}
         
-        # 生成时间戳避免缓存
+        # 生成新的URL
         timestamp=$(date +%s)
+        new_header_url="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=$color_param&t=$timestamp"
+        new_footer_url="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=$color_param&t=$timestamp"
         
-        # 更新 README
-        header_pattern='src="https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*"'
-        footer_pattern='src="https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*"'
+        # 读取README内容
+        content=$(cat README.md)
+        
+        # 替换URL（使用字符串替换而不是正则表达式）
+        content="${content//https://capsule-render.vercel.app/api?type=waving&height=200&section=header*alt=\"header\"/$new_header_url\" alt=\"header\"}"
+        content="${content//https://capsule-render.vercel.app/api?type=waving&height=100&section=footer*alt=\"footer\"/$new_footer_url\" alt=\"footer\"}"
+        
+        # 写回README
+        echo "$content" > README.md
 
-        sed -i "s|$header_pattern|src=\"$new_header_url\"|g" README.md
-        sed -i "s|$footer_pattern|src=\"$new_footer_url\"|g" README.md
-    - name: Commit and push changes
+    - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        
-        # 先拉取最新代码
-        git pull origin main
-        
-        # 添加更改到暂存区
         git add README.md
-        
-        # 检查是否有更改，有则提交
-        if ! git diff --staged --quiet; then
-          git commit -m "🔄 Update capsule gradient [timestamp: $(date +%s)]"
-          git push origin main
-        else
-          echo "No changes to commit"
-        fi
+        git diff --staged --quiet || git commit -m "🎨 Update gradient colors"
+        git pull --rebase
+        git push
