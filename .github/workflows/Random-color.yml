@@ -3,7 +3,7 @@ name: Random Capsule Gradient
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
+    - cron: '30 0 * * *'
 
 jobs:
   update-readme:
@@ -20,20 +20,13 @@ jobs:
 
     - name: Verify files exist
       run: |
-        echo "当前目录结构:"
-        ls -la
-        echo ""
-        echo "检查必要文件:"
+        echo "检查脚本文件:"
         [ -f ".github/scripts/update_capsule.py" ] && echo "✅ update_capsule.py 存在" || echo "❌ update_capsule.py 缺失"
         [ -f ".github/scripts/adjust_colors.py" ] && echo "✅ adjust_colors.py 存在" || echo "❌ adjust_colors.py 缺失"
         [ -f "config.json" ] && echo "✅ config.json 存在" || echo "❌ config.json 缺失"
-        [ -f "README.md" ] && echo "✅ README.md 存在" || echo "❌ README.md 缺失"
 
     - name: Run update script
-      run: |
-        # 在根目录运行脚本，不要切换目录
-        cd $GITHUB_WORKSPACE
-        python3 .github/scripts/update_capsule.py
+      run: python3 .github/scripts/update_capsule.py
 
     - name: Commit and push changes
       run: |
