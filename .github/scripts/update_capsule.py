@@ -51,7 +51,7 @@ def validate_config(config):
     
     for i, color in enumerate(candidate_colors):
         if not isinstance(color, str) or not color.startswith('#') or len(color) != 7:
-            raise ValueError(f"❌ 颜色格式错误 (索引 {i}): {color}。必须是 #RRGBB 格式")
+            raise ValueError(f"❌ 颜色格式错误 (索引 {i}): {color}。必须是 #RRGGBB 格式")
         try:
             int(color[1:], 16)  # 验证是有效的十六进制
         except ValueError:
@@ -159,7 +159,7 @@ def main():
             print(f"🎯 使用缓存颜色: {adjusted_colors}")
         else:
             # 读取配置文件
-            config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+            config_path = 'config.json'
             if not os.path.exists(config_path):
                 raise FileNotFoundError(f"❌ 配置文件不存在: {config_path}")
             
@@ -225,14 +225,12 @@ def main():
         with open(readme_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # 替换header URL
+        # 替换URL
         content = re.sub(
             r'src="https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*"',
             f'src="{new_header_url}"',
             content
         )
-        
-        # 替换footer URL
         content = re.sub(
             r'src="https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*"',
             f'src="{new_footer_url}"',
