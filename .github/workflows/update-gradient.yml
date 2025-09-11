@@ -54,5 +54,12 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
-        git commit -m "Update gradient with timestamp $timestamp" || echo "No changes to commit"
+    
+        # 拉取远程更改并合并
+        git pull origin main --rebase
+    
+        # 提交更改
+        git commit -m "🔄 Update capsule gradient [auto]" || echo "No changes to commit"
+    
+        # 推送更改
         git push
