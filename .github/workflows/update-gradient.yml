@@ -59,9 +59,11 @@ jobs:
         timestamp=$(date +%s)
         
         # 更新 README
-        sed -i "s|https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
-        sed -i "s|https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
+        header_pattern='src="https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*"'
+        footer_pattern='src="https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*"'
 
+        sed -i "s|$header_pattern|src=\"$new_header_url\"|g" README.md
+        sed -i "s|$footer_pattern|src=\"$new_footer_url\"|g" README.md
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
