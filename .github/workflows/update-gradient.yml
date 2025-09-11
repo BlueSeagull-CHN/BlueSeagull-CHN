@@ -1,0 +1,58 @@
+name: Random Capsule Gradient
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Read config and generate gradient
+      run: |
+        # 读取配置文件
+        config=$(cat config.json)
+        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['colors']))")
+        saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
+        
+        # 调整颜色饱和度
+        adjusted_colors=$(python3 adjust_colors.py "$colors" $saturation)
+        echo "Adjusted colors: $adjusted_colors"
+        
+        # 生成胶囊渲染 URL
+        header_text=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['text']))")
+        header_desc=$(echo $config | python3 -c "import json,sys,urllib.parse;data=json.load(sys.stdin);print(urllib.parse.quote(data['header']['desc']))")
+        
+        # 构建渐变颜色参数
+        color_param=""
+        IFS=' ' read -ra color_array <<< "$adjusted_colors"
+        for i in "${!color_array[@]}"; do
+          position=$((i * 100 / (${#color_array[@]} - 1)))
+          color_param+="${position}:${color_array[i]#\#},"
+        done
+        color_param=${color_param%,}
+        
+        # 生成时间戳避免缓存
+        timestamp=$(date +%s)
+        
+        # 更新 README
+        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=200&section=header[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
+        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git commit -m "Update gradient with timestamp $timestamp" || echo "No changes to commit"
+        git push
