@@ -1,8 +1,11 @@
 {
   "gradient": {
-    "colors": ["#C1E1C1", "#F8C8DC", "#D4F1F4", "#F0E4D7"],
+    "candidate_colors": [
+      "#C1E1C1", "#F8C8DC", "#D4F1F4", "#F0E4D7",
+      "#A3E4D7", "#FADBD8", "#D6EAF8", "#F9E79F"
+    ],
     "count": 4,
-    "saturation": 1.0,
+    "saturation": 1.2,
     "schedule": "daily"
   },
   "header": {
