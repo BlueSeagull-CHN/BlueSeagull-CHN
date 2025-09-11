@@ -159,7 +159,7 @@ def main():
             print(f"🎯 使用缓存颜色: {adjusted_colors}")
         else:
             # 读取配置文件
-            config_path = 'config.json'
+            config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
             if not os.path.exists(config_path):
                 raise FileNotFoundError(f"❌ 配置文件不存在: {config_path}")
             
