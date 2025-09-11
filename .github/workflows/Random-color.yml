@@ -20,7 +20,10 @@ jobs:
 
     - name: Verify files exist
       run: |
-        echo "检查脚本文件:"
+        echo "当前目录结构:"
+        ls -la
+        echo ""
+        echo "检查必要文件:"
         [ -f ".github/scripts/update_capsule.py" ] && echo "✅ update_capsule.py 存在" || echo "❌ update_capsule.py 缺失"
         [ -f ".github/scripts/adjust_colors.py" ] && echo "✅ adjust_colors.py 存在" || echo "❌ adjust_colors.py 缺失"
         [ -f "config.json" ] && echo "✅ config.json 存在" || echo "❌ config.json 缺失"
@@ -28,7 +31,8 @@ jobs:
 
     - name: Run update script
       run: |
-        # 在根目录运行，不要切换目录
+        # 在根目录运行脚本，不要切换目录
+        cd $GITHUB_WORKSPACE
         python3 .github/scripts/update_capsule.py
 
     - name: Commit and push changes
