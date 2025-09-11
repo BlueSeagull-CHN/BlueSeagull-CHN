@@ -51,7 +51,7 @@ def validate_config(config):
     
     for i, color in enumerate(candidate_colors):
         if not isinstance(color, str) or not color.startswith('#') or len(color) != 7:
-            raise ValueError(f"❌ 颜色格式错误 (索引 {i}): {color}。必须是 #RRGGBB 格式")
+            raise ValueError(f"❌ 颜色格式错误 (索引 {i}): {color}。必须是 #RRGBB 格式")
         try:
             int(color[1:], 16)  # 验证是有效的十六进制
         except ValueError:
