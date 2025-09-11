@@ -1,13 +1,8 @@
 {
   "gradient": {
     "candidate_colors": [
-      "#C1E1C1", "#F8C8DC", "#D4F1F4", "#F0E4D7",
-      "#A3E4D7", "#FADBD8", "#D6EAF8", "#F9E79F",
-      "#D5F5E3", "#F5EEF8", "#EBF5FB", "#FAE5D3",
-      "#E8F8F5", "#FDEBD0", "#D6DBDF", "#F2D7D5",
-      "#D1F2EB", "#FCF3CF", "#D6EAF8", "#FAD7A0",
-      "#ABEBC6", "#EDBB99", "#AED6F1", "#F5B7B1",
-      "#82E0AA", "#F8C471", "#85C1E9", "#F1948A"
+      "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FECA57",
+      "#FF9FF3", "#54A0FF", "#5F27CD", "#00D2D3", "#FF9F43"
     ],
     "count": 4,
     "saturation": 1.2,
