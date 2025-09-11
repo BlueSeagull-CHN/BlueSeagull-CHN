@@ -2,7 +2,7 @@
 
 <!-- capsulate-header-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradient" alt="header" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=wavinghttps://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientheight=200https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientsection=headerhttps://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientfontSize=40https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientfontAlignY=35https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradienttext=👋%20Hi%20I'm%20BlueSeagullhttps://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientdesc=Welcome%20to%20my%20GitHubhttps://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientdescAlignY=55https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientcolor=0:f7c8dc,33:c1e1c1,66:f0e3d6,100:d4f1f4https://capsule-render.vercel.app/api?type=waving&height=200&section=header&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&color=gradientt=1757589670" alt="header" width="100%"/>
 </p>
 <!-- capsulate-header-end -->
 
@@ -77,7 +77,7 @@
 
 <!-- capsulate-footer-start -->
 <p>
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=gradient" alt="footer" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=wavinghttps://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=gradientheight=100https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=gradientsection=footerhttps://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=gradientcolor=0:f7c8dc,33:c1e1c1,66:f0e3d6,100:d4f1f4https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=gradientt=1757589670" alt="footer" width="100%"/>
 </p>
 <!-- capsulate-footer-end -->
 
