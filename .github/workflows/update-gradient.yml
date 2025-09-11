@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取所有历史记录
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -22,11 +24,22 @@ jobs:
       run: |
         # 读取配置文件
         config=$(cat config.json)
-        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['colors']))")
+        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['candidate_colors']))")
+        count=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['count'])")
         saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
         
+        # 随机选择指定数量的颜色
+        selected_colors=$(echo $colors | python3 -c "
+        import random, sys
+        colors = sys.stdin.read().split()
+        random.shuffle(colors)
+        print(' '.join(colors[:$count]))
+        ")
+        
+        echo "Selected colors: $selected_colors"
+        
         # 调整颜色饱和度
-        adjusted_colors=$(python3 adjust_colors.py "$colors" $saturation)
+        adjusted_colors=$(python3 adjust_colors.py "$selected_colors" $saturation)
         echo "Adjusted colors: $adjusted_colors"
         
         # 生成胶囊渲染 URL
@@ -46,20 +59,24 @@ jobs:
         timestamp=$(date +%s)
         
         # 更新 README
-        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=200&section=header[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
-        sed -i "s|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer[^\"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
+        sed -i "s|https://capsule-render\.vercel\.app/api\?[^"]*section=header[^"]*|https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=${header_text}&desc=${header_desc}&descAlignY=55&color=${color_param}&t=${timestamp}|g" README.md
+        sed -i "s|https://capsule-render\.vercel\.app/api\?[^"]*section=footer[^"]*|https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=${color_param}&t=${timestamp}|g" README.md
 
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        
+        # 先拉取最新代码
+        git pull origin main
+        
+        # 添加更改到暂存区
         git add README.md
-    
-        # 拉取远程更改并合并
-        git pull origin main --rebase
-    
-        # 提交更改
-        git commit -m "🔄 Update capsule gradient [auto]" || echo "No changes to commit"
-    
-        # 推送更改
-        git push
+        
+        # 检查是否有更改，有则提交
+        if ! git diff --staged --quiet; then
+          git commit -m "🔄 Update capsule gradient [timestamp: $(date +%s)]"
+          git push origin main
+        else
+          echo "No changes to commit"
+        fi
