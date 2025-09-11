@@ -3,7 +3,7 @@ name: Random Capsule Gradient
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 0 * * *'
+    - cron: '30 0 * * *'  # 每天 UTC 时间 00:30 运行
 
 jobs:
   update-readme:
@@ -24,9 +24,12 @@ jobs:
         [ -f ".github/scripts/update_capsule.py" ] && echo "✅ update_capsule.py 存在" || echo "❌ update_capsule.py 缺失"
         [ -f ".github/scripts/adjust_colors.py" ] && echo "✅ adjust_colors.py 存在" || echo "❌ adjust_colors.py 缺失"
         [ -f "config.json" ] && echo "✅ config.json 存在" || echo "❌ config.json 缺失"
+        [ -f "README.md" ] && echo "✅ README.md 存在" || echo "❌ README.md 缺失"
 
     - name: Run update script
-      run: python3 .github/scripts/update_capsule.py
+      run: |
+        cd .github/scripts
+        python3 update_capsule.py
 
     - name: Commit and push changes
       run: |
