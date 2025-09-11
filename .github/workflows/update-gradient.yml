@@ -1,71 +1,32 @@
-name: Random Capsule Gradient
+name: Update Gradient
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 0 * * *'
 
 jobs:
-  update-readme:
+  update:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-
-    - name: Update gradient
+        
+    - name: Test basic functionality
       run: |
-        # 读取配置文件
+        # 简单测试 - 先不修改README，只测试颜色生成
         config=$(cat config.json)
-        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['candidate_colors']))")
-        count=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['count'])")
-        saturation=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(data['gradient']['saturation'])")
+        colors=$(echo $config | python3 -c "import json,sys;data=json.load(sys.stdin);print(' '.join(data['gradient']['candidate_colors'][:2]))")
+        echo "测试颜色: $colors"
         
-        # 随机选择颜色
-        selected_colors=$(echo $colors | python3 -c "
-        import random, sys
-        colors = sys.stdin.read().split()
-        random.shuffle(colors)
-        print(' '.join(colors[:$count]))
-        ")
+        # 测试颜色调整
+        result=$(python3 adjust_colors.py "$colors" 1.0)
+        echo "调整后颜色: $result"
         
-        # 调整颜色饱和度
-        adjusted_colors=$(python3 adjust_colors.py "$selected_colors" $saturation)
-        
-        # 构建渐变参数
-        color_param=""
-        IFS=' ' read -ra color_array <<< "$adjusted_colors"
-        for i in "${!color_array[@]}"; do
-          position=$((i * 100 / (${#color_array[@]} - 1)))
-          color_param+="${position}:${color_array[i]#\#},"
-        done
-        color_param=${color_param%,}
-        
-        # 生成新的URL
-        timestamp=$(date +%s)
-        new_header_url="https://capsule-render.vercel.app/api?type=waving&height=200&section=header&fontSize=40&fontAlignY=35&text=👋%20Hi%20I'm%20BlueSeagull&desc=Welcome%20to%20my%20GitHub&descAlignY=55&color=$color_param&t=$timestamp"
-        new_footer_url="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=$color_param&t=$timestamp"
-        
-        # 读取README内容
-        content=$(cat README.md)
-        
-        # 替换URL（使用字符串替换而不是正则表达式）
-        content="${content//https://capsule-render.vercel.app/api?type=waving&height=200&section=header*alt=\"header\"/$new_header_url\" alt=\"header\"}"
-        content="${content//https://capsule-render.vercel.app/api?type=waving&height=100&section=footer*alt=\"footer\"/$new_footer_url\" alt=\"footer\"}"
-        
-        # 写回README
-        echo "$content" > README.md
-
-    - name: Commit changes
+    - name: Show current README
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add README.md
-        git diff --staged --quiet || git commit -m "🎨 Update gradient colors"
-        git pull --rebase
-        git push
+        echo "当前README内容:"
+        grep -A 2 -B 2 "capsule-render" README.md
