@@ -57,25 +57,6 @@
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
-<div align="left">
-
-<h4>⚙️ 配置说明</h4>
-<p>
-  渐变和文字设置在 <code>config.json</code> 中：
-</p>
-<ul>
-  <li><code>gradient.colors</code>：自定义颜色（HEX 格式，如 <code>#A3BFFA</code>）。</li>
-  <li><code>gradient.count</code>：渐变颜色个数（2-5，默认 5）。</li>
-  <li><code>gradient.saturation</code>：饱和度调整（0.5-2.0，默认 1.0）。</li>
-  <li><code>gradient.schedule</code>：刷新频率（例如 <code>"24:30"</code>、<code>"daily"</code>、<code>"weekly"</code>、<code>"monthly"</code>）。</li>
-  <li><code>header</code>、<code>intro</code>、<code>footer</code>：设置标题和介绍文字。</li>
-</ul>
-<p>
-  修改 <code>config.json</code> 后，运行 <code>Random Capsule Gradient</code> 工作流程更新 README。
-</p>
-
-<hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
-
 <!-- capsulate-footer-start -->
 <p>
   <img src="https://capsule-render.vercel.app/api?type=waving&height=100&section=footer&color=0:C1E1C1,33:F8C8DC,66:D4F1F4,100:F0E4D7" alt="footer" width="100%"/>
