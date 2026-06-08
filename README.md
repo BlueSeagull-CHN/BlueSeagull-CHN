@@ -61,10 +61,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-下载" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-下载" target="_blank">
     <img src="https://img.shields.io/badge/⬇️%20下载-单文件绿色版-0A6E5D?style=for-the-badge"/>
   </a>
-  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-使用指南" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-使用指南" target="_blank">
     <img src="https://img.shields.io/badge/📖%20使用指南-快速上手-6C63FF?style=for-the-badge"/>
   </a>
 </p>
