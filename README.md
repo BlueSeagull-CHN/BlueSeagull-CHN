@@ -42,7 +42,34 @@
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
 <!-- 最新博客 / 项目 -->
+<!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
+
+<!-- potplayerhistory-intro-start -->
+<h4>🎬 近期项目：PotPlayer 播放位置记忆管理器</h4>
+<p align="center">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory">
+    <img src="https://img.shields.io/badge/📌%20项目-PotPlayerHistory-4c8bf5?style=flat-square&logo=github&logoColor=white"/>
+  </a>
+  <img src="https://img.shields.io/badge/🐍%20Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/🖥️%20Tkinter-UI-00B4D8?style=flat-square"/>
+  <img src="https://img.shields.io/badge/✨%20最新版本-v1.0.0-4CAF50?style=flat-square"/>
+</p>
+
+<p align="center">
+  <strong>🎯 智能管理 PotPlayer 播放进度 · 告别手动清理</strong><br/>
+  <sub>✨ 自动加载配置 · 关键词/日期双模式筛选 · 一键清理失效文件 · 安全撤销机制 · 自动备份</sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-下载">
+    <img src="https://img.shields.io/badge/⬇️%20下载-单文件绿色版-0A6E5D?style=for-the-badge"/>
+  </a>
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-使用指南">
+    <img src="https://img.shields.io/badge/📖%20使用指南-快速上手-6C63FF?style=for-the-badge"/>
+  </a>
+</p>
+<!-- potplayerhistory-intro-end -->
 
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 <!-- activity-start -->
