@@ -42,7 +42,6 @@
 <hr style="border: 1px solid #F8C8DC; margin: 20px 0;">
 
 <!-- 最新博客 / 项目 -->
-<!-- 最新博客 / 项目 -->
 <h4>📌 Latest</h4>
 
 <!-- potplayerhistory-intro-start -->
@@ -62,10 +61,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-下载">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-下载" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/⬇️%20下载-单文件绿色版-0A6E5D?style=for-the-badge"/>
   </a>
-  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-使用指南">
+  <a href="https://github.com/BlueSeagull-CHN/PotPlayerHistory#-使用指南" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/📖%20使用指南-快速上手-6C63FF?style=for-the-badge"/>
   </a>
 </p>
