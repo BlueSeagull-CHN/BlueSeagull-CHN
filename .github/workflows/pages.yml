@@ -1,0 +1,76 @@
+name: 部署主库内容到 GitHub Pages
+
+on:
+  # 当推送到 main 或 master 分支时触发（根据你的主分支名称调整）
+  push:
+    branches: [ "main", "master" ]
+  # 允许手动触发工作流
+  workflow_dispatch:
+
+# 设置权限：允许部署到 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制：避免同时部署冲突
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # 构建任务
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出主库代码
+        uses: actions/checkout@v4
+        with:
+          repository: BlueSeagull-CHN/BlueSeagull-CHN
+          path: main-repo
+
+      - name: 检出个人网站仓库（用于部署）
+        uses: actions/checkout@v4
+        with:
+          repository: BlueSeagull-CHN/BlueSeagull-CHN.github.io
+          path: pages-repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 准备网站文件
+        run: |
+          # 清空个人网站仓库的旧内容（保留 .git 文件夹）
+          cd pages-repo
+          find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} +
+          
+          # 复制主库的 README.md 作为首页
+          cp ../main-repo/README.md ./index.md
+          
+          # （可选）复制主库的其他文件，比如图片文件夹
+          # cp -r ../main-repo/images ./images 2>/dev/null || true
+          
+          # 创建 Jekyll 配置文件（让 GitHub Pages 正确渲染）
+          cat > _config.yml << 'EOF'
+          theme: jekyll-theme-minimal
+          title: BlueSeagull 的技术笔记
+          description: 代码 · 读书 · 折腾新技术
+          EOF
+          
+          # 显示结果
+          ls -la
+
+      - name: 上传构建产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-repo
+
+  # 部署任务
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
