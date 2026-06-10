@@ -34,7 +34,7 @@ jobs:
         with:
           repository: BlueSeagull-CHN/BlueSeagull-CHN.github.io
           path: pages-repo
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAGES_TOKEN }}
 
       - name: 准备网站文件
         run: |
