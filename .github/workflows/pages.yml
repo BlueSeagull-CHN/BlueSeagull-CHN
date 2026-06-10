@@ -32,7 +32,7 @@ jobs:
       - name: 检出个人网站仓库（用于部署）
         uses: actions/checkout@v4
         with:
-          repository: BlueSeagull-CHN/BlueSeagull-CHN.github.io
+          repository: BlueSeagull-CHN/blueseagull-chn.github.io
           path: pages-repo
           token: ${{ secrets.PAGES_TOKEN }}
 
